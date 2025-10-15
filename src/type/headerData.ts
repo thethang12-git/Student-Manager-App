@@ -1,7 +1,9 @@
+import { ReactNode } from "react";
+
 export interface HeaderDataType {
     id: number;
-    name: string;
-    icon? : string;
+    name?: string;
+    icon : ReactNode;
     link :string;
-    counter?:number;
+    count:number;
 }
