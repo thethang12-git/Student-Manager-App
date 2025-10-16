@@ -1,6 +1,6 @@
 import "./globals.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import FooterNav from "@/app/components/FooterNav/page";
+import FooterNav from "@/components/FooterNav/page";
 import HeaderWrapper from "./HeaderWrapper";
 export default function RootLayout({
   children,
@@ -20,8 +20,6 @@ export default function RootLayout({
           <FooterNav/>
       </div>
       </body>
-      
-      
     </html>
   );
 }
