@@ -1,0 +1,8 @@
+.fc {
+    user-select: none;
+    font-family: 'Roboto', sans-serif;
+}
+a {
+    text-decoration: none;
+    color: black;
+}
