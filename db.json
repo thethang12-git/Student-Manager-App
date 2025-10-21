@@ -1,0 +1,11 @@
+{
+  "events": [
+    {"title": "Sự kiện A",  "start": "2025-09-01", "end": "2025-09-03"},
+    {"title": "Sự kiện B", "start": "2025-10-20"},
+    {"title": "Sự kiện C", "start": "2025-10-21"},
+    {"title": "Sự kiện D", "start": "2025-10-22"},
+    {"title": "Sự kiện E", "start": "2025-10-23"},
+    {"title": "Sự kiện F", "start": "2025-10-24"},
+    {"title": "Sự kiện Y",  "start": "2025-09-01", "end": "2025-09-03"}
+  ]
+}

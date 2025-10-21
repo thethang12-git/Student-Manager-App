@@ -4,29 +4,59 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid'
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import googleCalendarPlugin from '@fullcalendar/google-calendar';
 import './style.css'
-import {auto} from "@popperjs/core";
+// import { start } from 'repl';
+import axios from 'axios';
+import CalenHandle from '@/service/calendar';
+import CreateNew from './createNew/page';
 export default function CalendarPage() {
+    let [events,setEvents] = useState([])
+    let [loadData,setLoadData] = useState(false)
+    let [formikData,setFormikData] = useState()
+    // 
+    const [show, setShow] = useState(false);
+
+    useEffect(() => {
+    CalenHandle.getData().then(function (res) {
+    setEvents (res.data)}).catch(function (error) 
+    {
+        console.log(error);
+    });
+    },[loadData])
+// 
     const [currentView, setView] = useState('dayGridMonth');
     const viewStatusHandler = (view: string) => {
         if(view) {
             setView(view);
         }
     }
+// 
     return (
         <div style={{ height: '100%' ,overflowY: 'hidden' }}>
+            <CreateNew formikData = {formikData} setFormikData = {setFormikData} show = {show} setShow={setShow}/>
             <FullCalendar
-                plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
+                plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin,googleCalendarPlugin ]}
                 locale={'vi'}
                 firstDay={1}
                 initialView="dayGridMonth"
                 editable = {true}
                 droppable  = {true}
                 eventOverlap={true}
-                events={[
-                    {title: 'Sự kiện A',  start: '2025-09-01', end: '2025-09-03',textColor:'white'},
-                    {title: 'Sự kiện B', date: '2025-10-20'},
+                googleCalendarApiKey = {'AIzaSyCNf6Z8PPTVcSgh0gYDJgph0DhvTejz41I'}
+                eventSources={[
+                    {
+                        googleCalendarId: 'vi.vietnamese#holiday@group.v.calendar.google.com',
+                        className : 'google-calendar',
+                        editable : false,
+                        eventDataTransform : (eDat) => {
+                            return {...eDat, url: undefined}
+                        }
+                    },
+                    {
+                    events :events
+                    }
                 ]}
                 headerToolbar={{
                     left: 'dayGridMonth,timeGridDay',
@@ -37,9 +67,10 @@ export default function CalendarPage() {
                 titleFormat={{month: 'numeric',year: 'numeric'}}
                 viewDidMount={(view) => viewStatusHandler(view.view.type)}
                 dayHeaderFormat={{weekday: 'short',}}
-                // eventDrop={(info) => {
-                //     console.log('Sự kiện mới:', info.event.start, info.event.end);
-                // }}
+                eventDrop={(info) => {
+                    console.log('Sự kiện mới:', info.event.id);
+                    // setEvents(prev => ({...prev,start: info.event.start,end: info.event.end}))
+                }}
                 eventTimeFormat={{
                     hour: '2-digit',
                     minute: '2-digit',
@@ -47,6 +78,8 @@ export default function CalendarPage() {
                     hour12: false,
                     omitZeroMinute: true,
                 }}
+                eventClick={(info) =>{CalenHandle.showCreateNew(info, setShow,setFormikData)}}
+                dateClick={(info) =>{CalenHandle.showCreateNew(info,setShow,setFormikData)}}
             />
         </div>
     );
