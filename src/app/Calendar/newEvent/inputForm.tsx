@@ -8,7 +8,7 @@ import axios from "axios";
 interface NewFormProps {
     newForm: boolean;
     setNewForm: (value: boolean) => void;
-    setLoadData: (value: boolean) => void;
+    setLoadData: (value: boolean | ((prev: boolean) => boolean)) => void;
     newFormData: any;
 }
 
