@@ -11,13 +11,17 @@ import './style.css'
 import axios from 'axios';
 import CalenHandle from '@/service/calendar';
 import CreateNew from './createNew/page';
+import NewForm from "@/app/Calendar/newEvent/inputForm";
+import {any} from "prop-types";
 export default function CalendarPage() {
-    let [events,setEvents] = useState([])
-    let [loadData,setLoadData] = useState(false)
-    let [formikData,setFormikData] = useState()
+    const [events,setEvents] = useState([])
+    const [loadData,setLoadData] = useState(false)
+    const [formikData,setFormikData] = useState()
     // 
     const [show, setShow] = useState(false);
-
+    const [newForm, setNewForm] = useState(false)
+    const [newFormData , setNewFormData] = useState<string> ('')
+    //
     useEffect(() => {
     CalenHandle.getData().then(function (res) {
     setEvents (res.data)}).catch(function (error) 
@@ -35,7 +39,8 @@ export default function CalendarPage() {
 // 
     return (
         <div style={{ height: '100%' ,overflowY: 'hidden' }}>
-            <CreateNew formikData = {formikData} setFormikData = {setFormikData} show = {show} setShow={setShow}/>
+            <NewForm newFormData={ newFormData} newForm = {newForm} setNewForm={ setNewForm} setLoadData ={setLoadData}/>
+            <CreateNew setLoadData ={setLoadData} formikData = {formikData} setFormikData = {setFormikData} show = {show} setShow={setShow}/>
             <FullCalendar
                 plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin,googleCalendarPlugin ]}
                 locale={'vi'}
@@ -69,7 +74,11 @@ export default function CalendarPage() {
                 dayHeaderFormat={{weekday: 'short',}}
                 eventDrop={(info) => {
                     console.log('Sự kiện mới:', info.event.id);
+                    CalenHandle.handleDrop(info,setLoadData)
                     // setEvents(prev => ({...prev,start: info.event.start,end: info.event.end}))
+                }}
+                eventResize = {(info) => {
+                    CalenHandle.handleDrop(info,setLoadData)
                 }}
                 eventTimeFormat={{
                     hour: '2-digit',
@@ -78,8 +87,8 @@ export default function CalendarPage() {
                     hour12: false,
                     omitZeroMinute: true,
                 }}
-                eventClick={(info) =>{CalenHandle.showCreateNew(info, setShow,setFormikData)}}
-                dateClick={(info) =>{CalenHandle.showCreateNew(info,setShow,setFormikData)}}
+                eventClick={(info) =>{CalenHandle.showCreateNew(info, setShow,setFormikData);}}
+                dateClick={(info) =>{console.log(info.dateStr);setNewFormData(info.dateStr);setNewForm(true)}}
             />
         </div>
     );
