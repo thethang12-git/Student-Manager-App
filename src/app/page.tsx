@@ -1,7 +1,8 @@
 "use client";
-import Body from "@/components/Body/page";
+import {redirect} from "next/navigation";
+
 export default function Home() {
   return (
-      <Body/>
+      redirect('home')
   );
 }

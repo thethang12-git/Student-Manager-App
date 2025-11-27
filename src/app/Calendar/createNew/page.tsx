@@ -41,9 +41,6 @@ function CreateNew({show, setShow, setFormikData, formikData, setLoadData}: Crea
             }
         },
     });
-    useEffect(() => {
-        console.log('formikData updated!!:', formikData);
-    }, [formikData]);
     const handleDelete = async () => {
         if(!formikData?.id) return
         await CalenHandle.deleteHandle(formikData.id)

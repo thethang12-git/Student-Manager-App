@@ -4,82 +4,72 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid'
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import googleCalendarPlugin from '@fullcalendar/google-calendar';
 import './style.css'
-// import { start } from 'repl';
-import axios from 'axios';
 import CalenHandle from '@/service/calendar';
 import CreateNew from './createNew/page';
 import NewForm from "@/app/Calendar/newEvent/inputForm";
-import {any} from "prop-types";
 export default function CalendarPage() {
     const [events,setEvents] = useState([])
     const [loadData,setLoadData] = useState(false)
     const [formikData,setFormikData] = useState()
-    // 
+    //
     const [show, setShow] = useState(false);
     const [newForm, setNewForm] = useState(false)
     const [newFormData , setNewFormData] = useState<string> ('')
     //
     useEffect(() => {
-    CalenHandle.getData().then(function (res) {
-    setEvents (res.data)}).catch(function (error) 
+    CalenHandle.getData().then( (res)=>
+    setEvents (res.data)).catch(function (error)
     {
         console.log(error);
     });
     },[loadData])
-// 
-    const [currentView, setView] = useState('dayGridMonth');
-    const viewStatusHandler = (view: string) => {
-        if(view) {
-            setView(view);
-        }
-    }
-// 
+    const handleDrop = useCallback((info: any) => {
+        CalenHandle.handleDrop(info)
+    }, []);
+    const eventSources = useMemo(() => [
+        {
+            googleCalendarId: 'vi.vietnamese#holiday@group.v.calendar.google.com',
+            className: 'google-calendar',
+            editable: false,
+        },
+        { events }
+    ], [events]);
+
+//
+//
     return (
-        <div style={{ height: '100%' ,overflowY: 'hidden' }}>
+        <div style={{textAlign:'center'}}>
             <NewForm newFormData={ newFormData} newForm = {newForm} setNewForm={ setNewForm} setLoadData ={setLoadData}/>
             <CreateNew setLoadData ={setLoadData} formikData = {formikData} setFormikData = {setFormikData} show = {show} setShow={setShow}/>
             <FullCalendar
+                aspectRatio={1.8}
+                expandRows={true}
                 plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin,googleCalendarPlugin ]}
                 locale={'vi'}
                 firstDay={1}
-                initialView="dayGridMonth"
+                initialView={"dayGridMonth"}
                 editable = {true}
                 droppable  = {true}
                 eventOverlap={true}
                 googleCalendarApiKey = {'AIzaSyCNf6Z8PPTVcSgh0gYDJgph0DhvTejz41I'}
-                eventSources={[
-                    {
-                        googleCalendarId: 'vi.vietnamese#holiday@group.v.calendar.google.com',
-                        className : 'google-calendar',
-                        editable : false,
-                        eventDataTransform : (eDat) => {
-                            return {...eDat, url: undefined}
-                        }
-                    },
-                    {
-                    events :events
-                    }
-                ]}
+                eventSources={eventSources}
                 headerToolbar={{
-                    left: 'dayGridMonth,timeGridDay',
+                    left: 'dayGridMonth,timeGridWeek,timeGridDay',
                     center: 'title',
                     right: 'prev,today,next',
                 }}
-                height={currentView === 'timeGridDay' ? '100%' : '60vh'}
-                titleFormat={{month: 'numeric',year: 'numeric'}}
-                viewDidMount={(view) => viewStatusHandler(view.view.type)}
+                buttonText={{
+                    today: 'Hôm nay',
+                    month: 'Tháng',
+                    week: 'Tuần',
+                    day: 'Ngày',
+                }}
                 dayHeaderFormat={{weekday: 'short',}}
-                eventDrop={(info) => {
-                    console.log('Sự kiện mới:', info.event.id);
-                    CalenHandle.handleDrop(info,setLoadData)
-                    // setEvents(prev => ({...prev,start: info.event.start,end: info.event.end}))
-                }}
-                eventResize = {(info) => {
-                    CalenHandle.handleDrop(info,setLoadData)
-                }}
+                eventDrop={(info) => handleDrop(info)}
+                eventResize = {(info) => handleDrop(info)}
                 eventTimeFormat={{
                     hour: '2-digit',
                     minute: '2-digit',
@@ -87,9 +77,24 @@ export default function CalendarPage() {
                     hour12: false,
                     omitZeroMinute: true,
                 }}
-                eventClick={(info) =>{CalenHandle.showCreateNew(info, setShow,setFormikData);}}
-                dateClick={(info) =>{console.log(info.dateStr);setNewFormData(info.dateStr);setNewForm(true)}}
+                eventDragStart={(info) => {
+                    const mirror = document.querySelector('.fc-event-dragging') as HTMLElement;
+                    if (mirror) {
+                        const offsetX = 16; // khoảng cách từ popup hoặc padding
+                        const offsetY = 16;
+                        mirror.style.left = `${info.jsEvent.pageX - offsetX}px`;
+                        mirror.style.top = `${info.jsEvent.pageY - offsetY}px`;
+                    }
+                }}
+                eventClick={(info) =>{
+                    const target = info.jsEvent.target as HTMLElement;
+                    if (target.closest('a.google-calendar')) {
+                        info.jsEvent.preventDefault();
+                        return; }
+                    CalenHandle.showCreateNew(info, setShow,setFormikData);}}
+                dateClick={(info) =>{setNewFormData(info.dateStr);setNewForm(true)}}
             />
         </div>
+
     );
 }

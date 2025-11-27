@@ -20,7 +20,6 @@ class CalenHandle {
     }
     static async handleDrop(
         obj: any,
-        setLoadData: React.Dispatch<React.SetStateAction<boolean>>
     ): Promise<void> {
         try {
             const updatedEvent = {
@@ -34,7 +33,6 @@ class CalenHandle {
 
             await axios.patch(`http://localhost:3001/events/${id}`, updatedEvent);
 
-            setLoadData(prev => !prev);
         } catch (error) {
             console.error(error);
         }
