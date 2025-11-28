@@ -41,7 +41,7 @@ export default function CalendarPage() {
 //
 //
     return (
-        <div style={{textAlign:'center'}}>
+        <div style={{textAlign:'center',height:'auto'}}>
             <NewForm newFormData={ newFormData} newForm = {newForm} setNewForm={ setNewForm} setLoadData ={setLoadData}/>
             <CreateNew setLoadData ={setLoadData} formikData = {formikData} setFormikData = {setFormikData} show = {show} setShow={setShow}/>
             <FullCalendar

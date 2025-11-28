@@ -84,20 +84,19 @@ const Home = () => {
                 </aside>
 
                 {/* Main Content */}
-                <main className="flex-1 p-8 overflow-y-auto">
+                <main className="flex-1 p-8 overflow-y-hidden h-screen flex flex-col">
                     {/* Header Dashboard */}
                     <Header/>
                     {/* thanh điều khiển */}
                     <ActionBar/>
                     {/*danh sách học sinh*/}
                     {activeMenu === 'manage' && (
-                        <div className={`reveal-down ${animationMap[activeMenu] ? "show" : ""}`}
-                        >
+                        <div style={{overflowY: 'auto'}} className={`reveal-down ${animationMap[activeMenu] ? "show" : ""}`}>
                             <StudentList initialStudentsData={studentsData}/>
                         </div>
                     )}
                     {activeMenu === 'calendar' && (
-                    <div className={`reveal-down ${animationMap[activeMenu] ? "show" : ""}`}>
+                    <div style={{flex: 1}} className={`reveal-down ${animationMap[activeMenu] ? "show" : ""}`}>
                         <CalendarPage/>
                     </div>)}
                 </main>

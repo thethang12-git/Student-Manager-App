@@ -7,12 +7,12 @@ class CalenHandle {
     static showCreateNew(obj:any,setShow: React.Dispatch<React.SetStateAction<boolean>>,setFormik:any) {
             setShow(true)
             if(!obj.event){
-                setFormik({...obj, id : obj.id})
-                // console.log(obj)
+                setFormik({...obj,time:obj._instance.range, id : obj.id})
+                console.log(obj)
                 return
             }
-            setFormik({...obj.event,id : obj.event.id})
-            // console.log(obj.event)
+            setFormik({time:obj.event._instance.range,id : obj.event.id})
+            console.log(obj.event)
             
     }
     static async postData(dataID :any,data:any ) : Promise<void> {
