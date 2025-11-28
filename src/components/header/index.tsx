@@ -1,6 +1,7 @@
 "use client"
 import {Bell, Search} from "lucide-react";
 import React from "react";
+import DropdownAvatar from "@/components/header/Avatar";
 
 export default function Header () {
     return (
@@ -27,11 +28,12 @@ export default function Header () {
                 </button>
 
                 {/* Avatar người dùng (trong header) */}
-                <img
-                    src="https://placehold.co/40x40/6366f1/ffffff?text=HS"
-                    alt="User Avatar"
-                    className="w-9 h-9 rounded-full object-cover hidden sm:block"
-                />
+                <DropdownAvatar></DropdownAvatar>
+                {/*<img*/}
+                {/*    src="https://placehold.co/40x40/6366f1/ffffff?text=HS"*/}
+                {/*    alt="User Avatar"*/}
+                {/*    className="w-9 h-9 rounded-full object-cover hidden sm:block"*/}
+                {/*/>*/}
             </div>
         </header>
     )

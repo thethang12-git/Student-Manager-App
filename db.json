@@ -1,4 +1,14 @@
 {
+  "users": [
+    {
+      "id": "1",
+      "name": "Mẹ Hương",
+      "email": "Lanhuong@gmail.com",
+      "password": "18122000",
+      "role": "admin",
+      "avatar": "https://marketplace.canva.com/SrBBE/MAGvNOSrBBE/1/tl/canva-cartoon-illustration-female-teacher-MAGvNOSrBBE.png"
+    }
+  ],
   "events": [
     {
       "title": "họp",
@@ -72,7 +82,7 @@
     },
     {
       "id": "f417",
-      "title": "ạda",
+      "title": "sự kiện mới",
       "start": "2025-11-04T00:00:00.000Z",
       "end": null,
       "allDay": false
@@ -115,14 +125,21 @@
     {
       "id": "ddb7",
       "title": "lịch mới",
-      "start": "2025-11-07T02:00:00.000Z",
-      "end": "2025-11-07T09:00:00.000Z",
+      "start": "2025-11-03T17:30:00.000Z",
+      "end": "2025-11-03T22:00:00.000Z",
       "allDay": false
     },
     {
       "id": "1768",
       "title": "ád",
       "start": "2025-10-21T17:00:00.000Z",
+      "end": null,
+      "allDay": true
+    },
+    {
+      "id": "135d",
+      "title": "ád",
+      "start": "2025-11-03T17:00:00.000Z",
       "end": null,
       "allDay": true
     }

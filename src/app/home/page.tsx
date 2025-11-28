@@ -1,5 +1,5 @@
 "use client"
-import React, {useState, useMemo, useEffect} from 'react';
+import React, {useState, useMemo, useEffect, useRef} from 'react';
 import {
     LayoutDashboard, Users, BookOpen, Clock, LogOut, Search, Bell, ChevronDown, List, Edit, Trash2, ArrowUpDown,
     Calendar
@@ -27,7 +27,7 @@ const studentsData = [
 // Component chính (Đã đổi tên thành Home)
 const Home = () => {
     const [activeMenu, setActiveMenu] = useState('manage');
-
+    const isFirstRender = useRef(true);
     const menuItems = [
         { id: 'progress', label: 'Tiến độ lớp học', icon: LayoutDashboard },
         { id: 'manage', label: 'Quản lý học sinh', icon: Users },
@@ -41,6 +41,10 @@ const Home = () => {
         progress: false
     });
     useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return; // bỏ qua lần render đầu tiên
+        }
         setAnimationMap(prev => {
             const resetMap : any = {}
             for(const key in prev){
