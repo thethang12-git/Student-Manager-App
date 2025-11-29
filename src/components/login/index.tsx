@@ -42,7 +42,7 @@ export default function LoginPage ()  {
                     setOpen(true)
                     setMessage('đúng òy')
                     setType('success')
-                    setTimeout(() =>router.push('/home'),1000 )
+                    setTimeout(() =>router.push('/home'),1300 )
                 }
                 else {
                     setOpen(true)
@@ -50,7 +50,7 @@ export default function LoginPage ()  {
                     setType('warning')
                 }
                 setIsSubmitting(false);
-            }, 1500);
+            }, 1200);
         })
 
     };

@@ -57,6 +57,7 @@ function ValidateUser({children}:ProvidersProps) {
                 return 'error';
             }
         }
+        handler();
         const loop = setInterval(handler, 5000);
         return () => clearInterval(loop)
     }, [isLoginPage, pathname, router]);
@@ -67,6 +68,7 @@ function UpdateData({ children }: ProvidersProps) {
     const pathname = usePathname();
     useEffect(() => {
         const getEmail = JSON.parse(localStorage.getItem("email"));
+        if(!getEmail) return;
         UserService.validateUser(getEmail).then(
             res => {
                 dispatch(setUser(res));

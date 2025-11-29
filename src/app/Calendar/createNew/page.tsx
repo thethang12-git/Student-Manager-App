@@ -2,10 +2,10 @@
 import Modal from 'react-bootstrap/Modal';
 import CreateForm from './form/inputField';
 import {useFormik} from 'formik';
-import { useEffect} from "react";
+import { useEffect, useState} from "react";
 import CalenHandle from "@/service/calendar";
 import { Clock } from '@untitledui/icons';
-
+import { TimePicker } from 'antd';
 interface CreateNewProps {
     show: boolean,
     setShow: (value: boolean) => void,
@@ -13,14 +13,14 @@ interface CreateNewProps {
     formikData: any,
     setLoadData?: (value: (((prevState: boolean) => boolean) | boolean)) => void
 }
-function formatResult(date: Date, time: string): string {
-    const today = new Date(date); 
-    const year = today.getFullYear();       
-    const month = today.getMonth() + 1;     
-    const day = today.getDate();          
-    const result = `${year}-${month}-${day}T${time}`
-    return result
+function formatResult(date: Date, time: string, isEnd: boolean): string {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0"); 
+    const day = String(d.getDate() + (isEnd ? 1 : 0)).padStart(2, "0"); 
+    return `${year}-${month}-${day}T${time}:00.000Z`;
 }
+
 
 function CreateNew({show, setShow, setFormikData, formikData, setLoadData}: CreateNewProps) {
     const handleClose = () => setShow(false);
@@ -28,18 +28,17 @@ function CreateNew({show, setShow, setFormikData, formikData, setLoadData}: Crea
         initialValues: {
             title: '',
             startTime: '10:00',
-            endTime: '11:00',
+            endTime: '11:00'
         },
         onSubmit:async (values) => {
             if (!values.title.trim()) return
             const newValue = {
                 id: formikData.id,
                 title: values.title,
-                start: formatResult(formikData.time.start, values.startTime),
-                end: formatResult(formikData.time.end, values.endTime),
+                // start: formatResult(formikData.time.start, values.startTime,false),
+                // end: formatResult(formikData.time.start, values.endTime,true),
             };
             setFormikData(newValue);
-            console.log(newValue)
             try {
                 if (setLoadData) {
                     setLoadData(prev => !prev)
@@ -59,10 +58,6 @@ function CreateNew({show, setShow, setFormikData, formikData, setLoadData}: Crea
             setLoadData(prev => !prev)
         }
     }
-    useEffect(() => {
-        console.log('formikData',formikData);
-
-    }, [formikData,newData.values]);            
     return (
         <>
             <Modal show={show} onHide={handleClose}>
@@ -71,11 +66,11 @@ function CreateNew({show, setShow, setFormikData, formikData, setLoadData}: Crea
                 </Modal.Header>
                 <Modal.Body style={{padding:'30px'}} className='flex gap-8 flex-col'>
                     <CreateForm formik={newData}/>
-                    <div className="flex items-center space-x-4">
+                    {/* <div className="flex items-center space-x-4">
                         <span className="text-gray-400">
                             <Clock className="w-5 h-5" />
                         </span>
-                        <div className="flex space-x-3 text-sm text-gray-700">
+                        <div className="flex text-sm text-gray-700">
                             <input
                                 name='startTime'
                                 type="time"
@@ -92,7 +87,7 @@ function CreateNew({show, setShow, setFormikData, formikData, setLoadData}: Crea
                                 onChange={newData.handleChange }
                             />
                         </div>
-                    </div>
+                    </div> */}
                 </Modal.Body>
                 <Modal.Footer className='d-flex justify-content-between w-100'>
                     <button 

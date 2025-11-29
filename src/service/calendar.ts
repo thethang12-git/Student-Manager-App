@@ -8,11 +8,11 @@ class CalenHandle {
             setShow(true)
             if(!obj.event){
                 setFormik({...obj,time:obj._instance.range, id : obj.id})
-                console.log(obj)
+                // console.log(obj)
                 return
             }
             setFormik({time:obj.event._instance.range,id : obj.event.id})
-            console.log(obj.event)
+            // console.log(obj.event)
             
     }
     static async postData(dataID :any,data:any ) : Promise<void> {
