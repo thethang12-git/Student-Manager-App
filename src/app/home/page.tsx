@@ -10,22 +10,23 @@ import ActionBar from "@/components/actionbar";
 import Header from "@/components/header";
 import UserProfile_Logout from "@/components/userProfile_logout";
 import CalendarPage from "@/app/Calendar/page";
+import {useAppSelector} from "@/store/hook";
 
-// Dữ liệu mẫu
-const studentsData = [
-    { id: 1001543, name: 'Anderson', gender: 'M', category: 'Hip Hop', date: 'Jan 22, 2022', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/9333ea/ffffff?text=A' },
-    { id: 1001567, name: 'Beckett', gender: 'F', category: 'Hip Hop', date: 'Feb 12, 2022', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/059669/ffffff?text=B' },
-    { id: 1001544, name: 'Brady', gender: 'M', category: 'Jazz', date: 'Jul 17, 2021', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/f97316/ffffff?text=B' },
-    { id: 1001523, name: 'Cassidy', gender: 'F', category: 'Ballet', date: 'Sep 25, 2021', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/0ea5e9/ffffff?text=C' },
-    { id: 1001512, name: 'Delaney', gender: 'F', category: 'Modern Dance', date: 'Aug 05, 2021', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/a855f7/ffffff?text=D' },
-    { id: 1001545, name: 'Easton', gender: 'M', category: 'Jazz', date: 'Feb 22, 2021', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/14b8a6/ffffff?text=E' },
-    { id: 1001578, name: 'Griffin', gender: 'M', category: 'Hip Hop', date: 'Nov 07, 2021', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/e11d48/ffffff?text=G' },
-    { id: 1001585, name: 'Luna', gender: 'F', category: 'Ballet', date: 'Dec 25, 2021', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/ca8a04/ffffff?text=L' },
-];
+// const studentsData = [
+//     { id: 1001543, name: 'Anderson',  date: 'Jan 22, 2022', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/9333ea/ffffff?text=A' },
+//     { id: 1001567, name: 'Beckett',  date: 'Feb 12, 2022', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/059669/ffffff?text=B' },
+//     { id: 1001544, name: 'Brady',  date: 'Jul 17, 2021', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/f97316/ffffff?text=B' },
+//     { id: 1001523, name: 'Cassidy', category: 'Ballet', date: 'Sep 25, 2021', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/0ea5e9/ffffff?text=C' },
+//     { id: 1001512, name: 'Delaney', category: 'Modern Dance', date: 'Aug 05, 2021', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/a855f7/ffffff?text=D' },
+//     { id: 1001545, name: 'Easton', category: 'Jazz', date: 'Feb 22, 2021', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/14b8a6/ffffff?text=E' },
+//     { id: 1001578, name: 'Griffin', category: 'Hip Hop', date: 'Nov 07, 2021', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/e11d48/ffffff?text=G' },
+//     { id: 1001585, name: 'Luna', category: 'Ballet', date: 'Dec 25, 2021', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/ca8a04/ffffff?text=L' },
+// ];
 
 
 // Component chính (Đã đổi tên thành Home)
 const Home = () => {
+    const [students, setStudents] = useState<any[]>([]);
     const [activeMenu, setActiveMenu] = useState('manage');
     const isFirstRender = useRef(true);
     const menuItems = [
@@ -34,6 +35,10 @@ const Home = () => {
         { id: 'guide', label: "Hướng dẫn Giáo viên", icon: BookOpen },
         { id: 'calendar', label: 'Lịch', icon: Calendar },
     ];
+    const getStudents = useAppSelector(state => state.student.list)
+    useEffect(() => {
+        setStudents(getStudents);
+    }, [getStudents]);
     const [animationMap, setAnimationMap] = useState<Record<string, boolean>>({
         manage: true,
         calendar: false,
@@ -54,8 +59,6 @@ const Home = () => {
         })
         setTimeout(() => setAnimationMap(prev => ({...prev, [activeMenu]: !prev[activeMenu]})),200)
     }, [activeMenu]);
-
-    // Layout chung cho toàn bộ trang
     return (
         <div className="min-h-screen bg-gray-100">
             <div className="bg-white flex w-full min-h-screen overflow-hidden">
@@ -92,7 +95,7 @@ const Home = () => {
                     {/*danh sách học sinh*/}
                     {activeMenu === 'manage' && (
                         <div style={{overflowY: 'auto'}} className={`reveal-down ${animationMap[activeMenu] ? "show" : ""}`}>
-                            <StudentList initialStudentsData={studentsData}/>
+                            <StudentList initialStudentsData={students}/>
                         </div>
                     )}
                     {activeMenu === 'calendar' && (

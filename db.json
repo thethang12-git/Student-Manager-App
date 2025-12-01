@@ -7,6 +7,15 @@
       "password": "18122000",
       "role": "admin",
       "avatar": "https://marketplace.canva.com/SrBBE/MAGvNOSrBBE/1/tl/canva-cartoon-illustration-female-teacher-MAGvNOSrBBE.png"
+    },
+    {
+      "id": "2",
+      "name": "Phụ huynh A",
+      "email": "phuhuynh@gmail.com",
+      "password": "123123",
+      "role": "parent",
+      "avatar": "https://avatardep.info/wp-content/uploads/2024/07/hinh-anh-gia-dinh-4-nguoi-chibi-25.jpg",
+      "studentId": "1"
     }
   ],
   "events": [
@@ -16,6 +25,23 @@
       "end": null,
       "id": "4839",
       "allDay": false
+    },
+    {
+      "id": "5a4f",
+      "title": "aa",
+      "start": "2025-12-01T00:00:00.000Z",
+      "end": "2025-12-02T00:00:00.000Z",
+      "allDay": true
+    }
+  ],
+  "students": [
+    {
+      "id": 1,
+      "name": "Nguyen A",
+      "age": 21,
+      "class": "Lớp 131233213",
+      "date" :"Jan 22, 2022",
+      "avatar" :"https://placehold.co/40x40/9333ea/ffffff?text=A"
     }
   ]
 }

@@ -6,7 +6,7 @@ class UserService {
     }
     static async validateUser(email: string, password?: string) {
         try {
-            const res = await axios.get("http://localhost:3001/users", {params: {username: email, password: password}});
+            const res = await axios.get("http://localhost:3001/users", {params: {email: email, password: password}});
             return res.data?.[0] || undefined;
         } catch (err) {
             return console.log(err);

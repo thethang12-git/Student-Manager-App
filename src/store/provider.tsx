@@ -1,12 +1,14 @@
 'use client';
 
-import { Provider } from 'react-redux';
+import {Provider, useDispatch} from 'react-redux';
 import { store } from './store';
 import React, {useEffect} from "react";
 import {usePathname, useRouter} from "next/navigation";
 import {useAppDispatch} from "./hook";
 import UserService from "@/service/userData";
-import {setUser} from "@/store/slices/user";
+import {resetUser, setUser} from "@/store/slices/user";
+import StudentService from "@/service/studentList";
+import {setList} from "@/store/slices/studentList";
 
 interface ProvidersProps {
     children: React.ReactNode;
@@ -15,8 +17,9 @@ function ValidateUser({children}:ProvidersProps) {
     const router = useRouter();
     const pathname = usePathname();
     const isLoginPage = pathname === '/login' || (pathname === '/register');
-
+    const dispatch = useDispatch();
     useEffect(() => {
+        if(isLoginPage) return
         const handler = () =>{
             const getId = parseVal(localStorage.getItem("id"))
             const getAvatar = parseVal(localStorage.getItem("avatar"))
@@ -25,6 +28,7 @@ function ValidateUser({children}:ProvidersProps) {
                 setTimeout(() => {
                     localStorage.clear();
                     router.push('/login');
+                    dispatch(resetUser());
                 },1000)
                 alert('sai thông tin,đăng nhập lại!')
                 return
@@ -38,6 +42,7 @@ function ValidateUser({children}:ProvidersProps) {
                             setTimeout(() => {
                                 localStorage.clear();
                                 router.push('/login');
+                                dispatch(resetUser());
                             },1000)
                             alert('sai thông tin,đăng nhập lại!')
                         }
@@ -46,6 +51,7 @@ function ValidateUser({children}:ProvidersProps) {
                 .catch((error) => {setTimeout(() => {
                     localStorage.clear();
                     router.push('/login');
+                    dispatch(resetUser());
                 },1000)
                     alert('sai thông tin,đăng nhập lại!')});
         }
@@ -66,7 +72,9 @@ function ValidateUser({children}:ProvidersProps) {
 function UpdateData({ children }: ProvidersProps) {
     const dispatch = useAppDispatch();
     const pathname = usePathname();
+    const isLoginPage = pathname === '/login' || (pathname === '/register');
     useEffect(() => {
+        if(isLoginPage) return
         const getEmail = JSON.parse(localStorage.getItem("email"));
         if(!getEmail) return;
         UserService.validateUser(getEmail).then(
@@ -74,12 +82,14 @@ function UpdateData({ children }: ProvidersProps) {
                 dispatch(setUser(res));
             }
         )
-    }, [dispatch,pathname]);
+        StudentService.getData().then(
+            res =>
+                dispatch(setList(res.data))
+        )
+    }, [dispatch, isLoginPage, pathname]);
     return children;
 }
 function Providers({ children }: ProvidersProps) {
-    const pathname = usePathname();
-    const isLoginPage = pathname === '/login' || (pathname === '/register');
     return (
         <Provider store={store}>
             <ValidateUser>

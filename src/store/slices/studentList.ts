@@ -4,6 +4,8 @@ interface Student {
     name: string;
     age: number;
     class: string;
+    date: string;
+    avatar: string;
 }
 interface StudentListState {
     list: Student[];

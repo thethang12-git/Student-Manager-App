@@ -1,25 +1,17 @@
 "use client"
-import React, {useMemo, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {ArrowUpDown, Edit, Trash2} from "lucide-react";
 
-// Lưu ý: studentsData cần được truyền vào hoặc định nghĩa ở đây
-// Giả định studentsData được truyền qua props hoặc định nghĩa trong file này
-// Để đảm bảo tính chạy độc lập (Standalone), tôi sẽ định nghĩa lại dữ liệu mẫu TẠM THỜI ở đây.
-const studentsData = [
-    { id: 1001543, name: 'Anderson', gender: 'M', category: 'Hip Hop', date: 'Jan 22, 2022', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/9333ea/ffffff?text=A' },
-    { id: 1001567, name: 'Beckett', gender: 'F', category: 'Hip Hop', date: 'Feb 12, 2022', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/059669/ffffff?text=B' },
-    { id: 1001544, name: 'Brady', gender: 'M', category: 'Jazz', date: 'Jul 17, 2021', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/f97316/ffffff?text=B' },
-    { id: 1001523, name: 'Cassidy', gender: 'F', category: 'Ballet', date: 'Sep 25, 2021', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/0ea5e9/ffffff?text=C' },
-]; // Chỉ là mẫu nhỏ gọn
 
 const StudentList = ({ initialStudentsData } :any ) => {
-    // Sử dụng initialStudentsData nếu có, nếu không dùng studentsData mẫu
-    const [students, setStudents] = useState(initialStudentsData || studentsData);
+    const [students, setStudents] = useState<any[]>([]);
+    useEffect(() => {
+        setStudents(initialStudentsData);
+    }, [initialStudentsData]);
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
-
-    // Logic sắp xếp (đơn giản)
+    if(!initialStudentsData) return null;
     const sortedStudents = useMemo(() => {
-        const sortableItems = [...students];
+        const sortableItems = Array.isArray(students) ? [...students] : [];
         if (sortConfig.key !== null) {
             sortableItems.sort((a, b) => {
                 if (a[sortConfig.key] < b[sortConfig.key]) {
@@ -43,12 +35,10 @@ const StudentList = ({ initialStudentsData } :any ) => {
     };
 
     const headers = [
+        { key: 'id', label: 'STT' },
         { key: 'name', label: 'Học sinh' },
-        { key: 'gender', label: 'M/F' },
-        { key: 'category', label: 'Danh mục' },
-        { key: 'id', label: 'ID Học sinh' },
-        { key: 'date', label: 'Ngày tham gia' },
-        { key: 'goal', label: 'Mục tiêu học tập' },
+        { key: 'date', label: 'Ngày bắt đầu học' },
+        { key: 'class', label: 'Lớp' },
         { key: 'actions', label: 'Hành động', sortable: false },
     ];
 
@@ -64,7 +54,6 @@ const StudentList = ({ initialStudentsData } :any ) => {
         ) : (
             <ArrowUpDown className="w-3 h-3 ml-1 opacity-20 group-hover:opacity-100 transition-opacity" /> // Mặc định
         );
-
         return (
             <th
                 className={`px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${header.sortable !== false ? 'cursor-pointer hover:text-indigo-600 group' : ''}`}
@@ -87,7 +76,7 @@ const StudentList = ({ initialStudentsData } :any ) => {
             setStudents(newStudents);
         }
     };
-
+    if (!initialStudentsData) return <div> loading ...</div>;
     return (
         <div className="h-auto shadow-md rounded-xl bg-white ">
             <table className="min-w-full divide-y divide-gray-200 ">
@@ -99,8 +88,9 @@ const StudentList = ({ initialStudentsData } :any ) => {
                 </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                {sortedStudents.map((student) => (
+                {sortedStudents.map((student : any) => (
                     <tr key={student.id} className="hover:bg-gray-50 transition-colors">
+                        <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{student.id}</td>
                         <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
                             <div className="flex items-center">
                                 <img
@@ -116,12 +106,9 @@ const StudentList = ({ initialStudentsData } :any ) => {
                                 {student.name}
                             </div>
                         </td>
-                        <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{student.gender}</td>
-                        <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{student.category}</td>
-                        <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{student.id}</td>
                         <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">{student.date}</td>
                         <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                            <span className="text-green-600 font-medium">{student.goal}</span>
+                            <span className="text-green-600 font-medium">{student.class}</span>
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap text-right text-sm font-medium">
                             <div className="flex items-center space-x-2">

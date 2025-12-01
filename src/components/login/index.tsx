@@ -3,9 +3,10 @@ import React, {useEffect, useState} from 'react';
 import UserService from "@/service/userData";
 import {useRouter} from "next/navigation";
 import {useDispatch} from "react-redux";
-import {setUser} from "@/store/slices/user";
+import { setUser} from "@/store/slices/user";
 import {useAppSelector} from "@/store/hook";
 import Snackbar from "../snackbar";
+import {setList} from "@/store/slices/studentList";
 
 const cx = (...classes: string[]) => classes.filter(Boolean).join(' ');
 
