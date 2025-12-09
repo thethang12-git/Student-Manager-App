@@ -6,6 +6,7 @@ import {useRouter} from "next/navigation";
 import {resetUser} from "@/store/slices/user";
 import Snackbar from "../snackbar";
 import {useAppSelector} from "@/store/hook";
+import Cookies from "js-cookie";
 
 export default function UserProfile_Logout () {
     const [loading, setLoading] = useState(false);
@@ -26,6 +27,7 @@ export default function UserProfile_Logout () {
         setLoading(true);
         dispatch(resetUser())
         localStorage.clear();
+        Cookies.remove("role", { path: "/" });
         setOpen(true);
         setMessage('đăng xuất thành công')
         setTimeout(() => router.push("/login"),1200);

@@ -27,21 +27,21 @@
       "allDay": false
     },
     {
-      "id": "5a4f",
-      "title": "aa",
-      "start": "2025-12-01T00:00:00.000Z",
-      "end": "2025-12-02T00:00:00.000Z",
-      "allDay": true
+      "id": "b4c6",
+      "title": "asdasd",
+      "start": "2025-12-09T16:30:00.000Z",
+      "end": "2025-12-09T22:30:00.000Z",
+      "allDay": false
     }
   ],
   "students": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Nguyen A",
       "age": 21,
       "class": "Lớp 131233213",
-      "date" :"Jan 22, 2022",
-      "avatar" :"https://placehold.co/40x40/9333ea/ffffff?text=A"
+      "date": "Jan 22, 2022",
+      "avatar": "https://placehold.co/40x40/9333ea/ffffff?text=A"
     }
   ]
 }

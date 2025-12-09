@@ -6,7 +6,7 @@ import {useDispatch} from "react-redux";
 import { setUser} from "@/store/slices/user";
 import {useAppSelector} from "@/store/hook";
 import Snackbar from "../snackbar";
-import {setList} from "@/store/slices/studentList";
+import Cookies from "js-cookie";
 
 const cx = (...classes: string[]) => classes.filter(Boolean).join(' ');
 
@@ -34,16 +34,17 @@ export default function LoginPage ()  {
             return;
         }
         UserService.validateUser(email, password).then((user) => {
-            dispatch(setUser(user));
             setTimeout(() => {
                 if (user) {
+                    dispatch(setUser(user));
+                    Cookies.set("role",user.role, { expires: 7, path: "/" });
                     localStorage.setItem("email", JSON.stringify(user.email));
                     localStorage.setItem("id", JSON.stringify(user.id));
                     localStorage.setItem("avatar", JSON.stringify(user.avatar));
                     setOpen(true)
                     setMessage('đúng òy')
                     setType('success')
-                    setTimeout(() =>router.push('/home'),1300 )
+                    setTimeout(() =>router.replace('/home'),1300 )
                 }
                 else {
                     setOpen(true)
