@@ -4,7 +4,7 @@ import {Provider, useDispatch} from 'react-redux';
 import { store } from './store';
 import React, {useEffect} from "react";
 import {usePathname, useRouter} from "next/navigation";
-import {useAppDispatch} from "./hook";
+import {useAppDispatch, useAppSelector} from "./hook";
 import UserService from "@/service/userData";
 import {resetUser, setUser} from "@/store/slices/user";
 import StudentService from "@/service/studentList";
@@ -89,13 +89,30 @@ function UpdateData({ children }: ProvidersProps) {
     }, [dispatch, isLoginPage, pathname]);
     return children;
 }
+function MiddleWareFake({ children }: ProvidersProps) {
+    const pathname = usePathname();
+    const userRole = useAppSelector(state => state.user.role)
+    const router = useRouter();
+    useEffect(() => {
+        if(pathname === '/login' ) return
+        if(userRole){
+            if(userRole == 'admin') return
+            else {
+                router.replace('/test');
+            }
+        }
+    }, [pathname, router, userRole]);
+    return children;
+}
 function Providers({ children }: ProvidersProps) {
     return (
         <Provider store={store}>
             <ValidateUser>
-                <UpdateData>
-                    {children}
-                </UpdateData>
+                <MiddleWareFake>
+                    <UpdateData>
+                        {children}
+                    </UpdateData>
+                </MiddleWareFake>
             </ValidateUser>
         </Provider>
     )

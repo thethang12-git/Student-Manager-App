@@ -39,6 +39,7 @@ const StudentList = ({ initialStudentsData } :any ) => {
         { key: 'name', label: 'Học sinh' },
         { key: 'date', label: 'Ngày bắt đầu học' },
         { key: 'class', label: 'Lớp' },
+        {key:'count',label:'số buổi'},
         { key: 'actions', label: 'Hành động', sortable: false },
     ];
 
@@ -110,6 +111,7 @@ const StudentList = ({ initialStudentsData } :any ) => {
                         <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
                             <span className="text-green-600 font-medium">{student.class}</span>
                         </td>
+                        <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500 ">{student.count}</td>
                         <td className="px-4 py-3 whitespace-nowrap text-right text-sm font-medium">
                             <div className="flex items-center space-x-2">
                                 <button
