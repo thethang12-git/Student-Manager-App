@@ -80,7 +80,7 @@ const StudentDetail = () => {
             </header>
 
             {/* Grid Layout chính */}
-            <div className="grid grid-cols-12 gap-6">
+            <div className="grid grid-cols-12 gap-6 grid-rows-4">
 
                 {/* Cột Trái: Profile, Contact, Social Media (col-span-3) */}
                 <div className="col-span-12 lg:col-span-4 xl:col-span-3 max-h-screen h-fit pb-20 overflow-auto rounded-2xl" style={{ scrollbarWidth: "none" }}>
@@ -89,13 +89,15 @@ const StudentDetail = () => {
                 </div>
 
                 {/* Cột Phải: Activity, Performance, Courses (col-span-9) */}
-                <div className="col-span-12 lg:col-span-8 xl:col-span-9 overflow-auto rounded-2xl">
+                <div className="grid col-span-12 lg:col-span-8 xl:col-span-9 overflow-auto rounded-2xl grid-rows-[30%_70%] h-screen">
                     {/* Hàng trên: Learning Activity và Performance */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <LearningActivity activity={student.activity} />
                         <Performance performance={student.performance} />
                     </div>
-                    <LessonsTracker courses={student.courses} />
+                    <div className="h-full">
+                        <LessonsTracker courses={student.courses} />
+                    </div>
                 </div>
             </div>
         </div>

@@ -12,13 +12,13 @@ const ActivityStat = ({ icon: Icon, value, label, color }) => (
 export default function LearningActivity({activity}: {activity: any}) {
     return (
         <>
-            <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+            <div className="bg-white p-2 rounded-2xl shadow-lg border border-gray-100 overflow-auto">
                 <h4 className="text-lg font-semibold text-gray-800 mb-1">Learning Activity</h4>
                 <p className="text-3xl font-bold text-gray-900">{activity.totalHours}</p>
                 <p className="text-sm text-gray-500 mb-6">30 days</p>
 
                 {/* Mô phỏng Biểu đồ cột */}
-                <div className="flex justify-between items-end h-32 space-x-2">
+                <div className="flex justify-between items-end h-18 space-x-2">
                     {activity.data.map((day, index) => (
                         <div key={index} className="flex flex-col items-center w-full group">
                             <div

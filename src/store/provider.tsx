@@ -98,7 +98,7 @@ function MiddleWareFake({ children }: ProvidersProps) {
         if(userRole){
             if(userRole == 'admin') return
             else {
-                router.replace('/test');
+                router.replace('/parentPage');
             }
         }
     }, [pathname, router, userRole]);

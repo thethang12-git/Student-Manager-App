@@ -48,7 +48,7 @@ const Home = () => {
     useEffect(() => {
         if (isFirstRender.current) {
             isFirstRender.current = false;
-            return; // bỏ qua lần render đầu tiên
+            return; 
         }
         setAnimationMap(prev => {
             const resetMap : any = {}

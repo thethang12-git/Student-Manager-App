@@ -14,7 +14,7 @@ const PerfMetric = ({ label, value, color }) => (
 export default function Performance ({performance}: {performance: any}) {
     return (
         <>
-            <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+            <div className="bg-white p-2 rounded-2xl shadow-lg border border-gray-100 overflow-auto">
                 <h4 className="text-lg font-semibold text-gray-800 mb-4">Performance</h4>
 
                 <div className="flex items-center space-x-6">
@@ -65,9 +65,9 @@ export default function Performance ({performance}: {performance: any}) {
                             />
                         </svg>
                     </div>
-                    <p className="text-xs text-gray-500 mt-2 italic">
+                    {/* <p className="text-xs text-gray-500 mt-2 italic">
                         {performance.quote}
-                    </p>
+                    </p> */}
                 </div>
             </div>
         </>

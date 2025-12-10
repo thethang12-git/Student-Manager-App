@@ -1,7 +1,7 @@
 "use client"
 import React, {useEffect, useState} from 'react';
 import UserService from "@/service/userData";
-import {useRouter} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 import {useDispatch} from "react-redux";
 import { setUser} from "@/store/slices/user";
 import {useAppSelector} from "@/store/hook";
@@ -51,7 +51,10 @@ export default function LoginPage ()  {
                     setMessage('sai òy')
                     setType('warning')
                 }
-                setIsSubmitting(false);
+                const pathname = usePathname();
+                if (pathname !== '/login') {
+                    setIsSubmitting(false);
+                }
             }, 1200);
         })
 
