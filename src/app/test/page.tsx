@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useCallback, useMemo } from 'react';
+import React, {useState, useCallback, useMemo, useEffect} from 'react';
 import { User, Clock, PackageOpen } from 'lucide-react';
 
 // Dữ liệu mẫu ban đầu
@@ -41,7 +41,6 @@ const TaskCard = ({ task, onDragStart }: any) => {
       id={id}
       draggable
       onDragStart={(e) => onDragStart(e, id)}
-      // Task Card hiện tại không cần fixed width nữa, nó sẽ full width của cột
       className="bg-white p-3 rounded-lg shadow-md cursor-grab active:cursor-grabbing hover:bg-gray-50 transition duration-150 border border-gray-200 flex items-center space-x-2 w-full"
     >
       <User className="h-4 w-4 text-indigo-500 flex-shrink-0" />
@@ -56,11 +55,9 @@ const TaskCard = ({ task, onDragStart }: any) => {
   );
 };
 
-// 2. DayColumn Component (Cột Ngày - Vùng thả)
 const DayColumn = ({ day, tasks, onDrop, onDragOver, onDragLeave }) => {
   return (
     <div
-      // DayColumn: Thiết lập thành cột cố định, không co lại, và có cuộn dọc (max-h-[70vh] overflow-y-auto)
       className="flex flex-col h-full min-w-98 mx-3 rounded-xl shadow-2xl bg-gray-100/50 border border-indigo-200 transition-all duration-300 hover:shadow-indigo-300/50"
       onDrop={(e) => onDrop(e, day.id)}
       onDragOver={onDragOver}
@@ -71,10 +68,7 @@ const DayColumn = ({ day, tasks, onDrop, onDragOver, onDragLeave }) => {
         <h2 className="text-xl font-extrabold text-indigo-700">{day.dayName}</h2>
         <p className="text-sm text-gray-500">{day.date}</p>
       </div>
-
-      {/* Nội dung Task (Vùng thả - Tasks sắp xếp theo chiều DỌC) */}
       <div
-        // Task Lane: Sử dụng flex-col (xếp dọc), space-y-3 (khoảng cách dọc) và overflow-y-auto (cuộn dọc)
         className={`task-lane flex-1 p-3 space-y-3 overflow-y-auto transition-all duration-300 day-drop-target`}
       >
         {tasks.length > 0 ? (
@@ -112,13 +106,11 @@ export const test = () => {
     e.currentTarget.classList.remove('bg-indigo-50', 'ring-4', 'ring-indigo-300', 'ring-opacity-50');
   }, []);
 
-
   // Xử lý logic thả
   const handleDrop = useCallback((e, targetDayId) => {
     e.preventDefault();
-    handleDragLeave(e); // Loại bỏ hiệu ứng highlight
+    handleDragLeave(e);
     const taskId = e.dataTransfer.getData('taskId');
-
     setTasks(prevTasks => {
       // Logic chính: Cập nhật 'day' của task đã kéo
       return prevTasks.map(task =>
@@ -131,12 +123,10 @@ export const test = () => {
   // Nhóm các công việc theo ngày để hiển thị (Tối ưu hóa bằng useMemo)
   const groupedTasks = useMemo(() => {
     return mockDays.reduce((acc, day) => {
-        // Đảm bảo tạo key cho tất cả các ngày
         acc[day.id] = tasks.filter(task => task.day === day.id);
         return acc;
     }, {});
   }, [tasks]);
-
   return (
     <div className="h-screen bg-gray-50 font-sans overflow-hidden ">
         <div className="calendar-grid flex overflow-x-auto h-full">

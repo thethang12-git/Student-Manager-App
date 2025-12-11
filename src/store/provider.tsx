@@ -4,11 +4,12 @@ import {Provider, useDispatch} from 'react-redux';
 import { store } from './store';
 import React, {useEffect} from "react";
 import {usePathname, useRouter} from "next/navigation";
-import {useAppDispatch, useAppSelector} from "./hook";
+import { useAppSelector} from "./hook";
 import UserService from "@/service/userData";
 import {resetUser, setUser} from "@/store/slices/user";
 import StudentService from "@/service/studentList";
 import {setList} from "@/store/slices/studentList";
+import {setValue} from "@/store/slices/dateCountData";
 
 interface ProvidersProps {
     children: React.ReactNode;
@@ -66,17 +67,18 @@ function ValidateUser({children}:ProvidersProps) {
         handler();
         const loop = setInterval(handler, 5000);
         return () => clearInterval(loop)
-    }, [isLoginPage, pathname, router]);
+    }, [dispatch, isLoginPage, pathname, router]);
     return children;
 }
 function UpdateData({ children }: ProvidersProps) {
-    const dispatch = useAppDispatch();
+    const dispatch = useDispatch();
     const pathname = usePathname();
     const isLoginPage = pathname === '/login' || (pathname === '/register');
     useEffect(() => {
         if(isLoginPage) return
         const getEmail = JSON.parse(localStorage.getItem("email"));
         if(!getEmail) return;
+        dispatch(setValue(new Date().toISOString()));
         UserService.validateUser(getEmail).then(
             res => {
                 dispatch(setUser(res));

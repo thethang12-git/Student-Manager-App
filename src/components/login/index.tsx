@@ -22,6 +22,7 @@ export default function LoginPage ()  {
     const [open, setOpen] = useState(false);
     const [message, setMessage] = useState('');
     const [type, setType] = useState('');
+    const pathname = usePathname();
     // Xử lý việc gửi form
     const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
@@ -51,7 +52,6 @@ export default function LoginPage ()  {
                     setMessage('sai òy')
                     setType('warning')
                 }
-                const pathname = usePathname();
                 if (pathname !== '/login') {
                     setIsSubmitting(false);
                 }

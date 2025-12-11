@@ -11,18 +11,7 @@ import Header from "@/components/header";
 import UserProfile_Logout from "@/components/userProfile_logout";
 import CalendarPage from "@/app/Calendar/page";
 import {useAppSelector} from "@/store/hook";
-
-// const studentsData = [
-//     { id: 1001543, name: 'Anderson',  date: 'Jan 22, 2022', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/9333ea/ffffff?text=A' },
-//     { id: 1001567, name: 'Beckett',  date: 'Feb 12, 2022', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/059669/ffffff?text=B' },
-//     { id: 1001544, name: 'Brady',  date: 'Jul 17, 2021', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/f97316/ffffff?text=B' },
-//     { id: 1001523, name: 'Cassidy', category: 'Ballet', date: 'Sep 25, 2021', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/0ea5e9/ffffff?text=C' },
-//     { id: 1001512, name: 'Delaney', category: 'Modern Dance', date: 'Aug 05, 2021', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/a855f7/ffffff?text=D' },
-//     { id: 1001545, name: 'Easton', category: 'Jazz', date: 'Feb 22, 2021', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/14b8a6/ffffff?text=E' },
-//     { id: 1001578, name: 'Griffin', category: 'Hip Hop', date: 'Nov 07, 2021', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/e11d48/ffffff?text=G' },
-//     { id: 1001585, name: 'Luna', category: 'Ballet', date: 'Dec 25, 2021', goal: '1 Academic Year', avatar: 'https://placehold.co/40x40/ca8a04/ffffff?text=L' },
-// ];
-
+import ClassCount from "@/components/classCount";
 
 // Component chính (Đã đổi tên thành Home)
 const Home = () => {
@@ -32,7 +21,7 @@ const Home = () => {
     const menuItems = [
         { id: 'progress', label: 'Tiến độ lớp học', icon: LayoutDashboard },
         { id: 'manage', label: 'Quản lý học sinh', icon: Users },
-        { id: 'guide', label: "Hướng dẫn Giáo viên", icon: BookOpen },
+        { id: 'classCount', label: "Số buổi học", icon: BookOpen },
         { id: 'calendar', label: 'Lịch', icon: Calendar },
     ];
     const getStudents = useAppSelector(state => state.student.list)
@@ -82,7 +71,6 @@ const Home = () => {
                             ))}
                         </nav>
                     </div>
-                    {/* User Profile và Logout */}
                     <UserProfile_Logout/>
                 </aside>
 
@@ -91,7 +79,7 @@ const Home = () => {
                     {/* Header Dashboard */}
                     <Header/>
                     {/* thanh điều khiển */}
-                    <ActionBar/>
+                    <ActionBar isOpen={activeMenu === 'classCount'}/>
                     {/*danh sách học sinh*/}
                     {activeMenu === 'manage' && (
                         <div style={{overflowY: 'auto'}} className={`reveal-down ${animationMap[activeMenu] ? "show" : ""}`}>
@@ -101,6 +89,10 @@ const Home = () => {
                     {activeMenu === 'calendar' && (
                     <div style={{flex: 1}} className={`reveal-down ${animationMap[activeMenu] ? "show" : ""}`}>
                         <CalendarPage/>
+                    </div>)}
+                    {activeMenu === 'classCount' && (
+                    <div style={{flex:1,overflow:"hidden"}} className={`reveal-down ${animationMap[activeMenu] ? "show" : ""}`}>
+                        <ClassCount/>
                     </div>)}
                 </main>
             </div>

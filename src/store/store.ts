@@ -1,11 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from "./slices/user";
 import studentReducer from "./slices/studentList"
-
+import dateSliceReducer from "./slices/dateCountData"
 export const store = configureStore({
     reducer: {
         user: userReducer,
-        student: studentReducer
+        student: studentReducer,
+        date: dateSliceReducer
     },
 });
 
