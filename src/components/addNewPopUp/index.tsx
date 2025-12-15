@@ -3,6 +3,8 @@ import React, {useState, useCallback, useEffect} from 'react';
 import {X, User, Users, Calendar, Hash} from 'lucide-react';
 import { useAppSelector} from "@/store/hook";
 import {useDispatch} from "react-redux";
+import { addClass } from '@/store/slices/classCount';
+import ClassCountData from '@/service/classCount';
 
 const formatDate = (date) => {
     const d = new Date(date);
@@ -70,6 +72,9 @@ const AddNewPopUp = ({}) => {
             time: time,
             day: week[trueIndex]
         }
+        dispatch(addClass(value));
+        setTimeout(() => {ClassCountData.updateData(value)}, 1000);
+        closeModal();
         console.log(value)
     })
 
