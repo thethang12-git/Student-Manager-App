@@ -56,7 +56,6 @@ const Home = () => {
     return (
         <div className="min-h-screen bg-gray-100">
             <div className="bg-white flex w-full min-h-screen overflow-hidden">
-
                 {/* Sidebar */}
                 <aside className="w-68 p-6 flex flex-col justify-between border-r border-gray-100 bg-white">
                     {/* Logo và Menu */}
@@ -78,7 +77,6 @@ const Home = () => {
                     </div>
                     <UserProfile_Logout/>
                 </aside>
-
                 {/* Main Content */}
                 <main className="flex-1 p-8 overflow-y-hidden h-screen flex flex-col">
                     {/* Header Dashboard */}

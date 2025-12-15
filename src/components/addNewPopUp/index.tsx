@@ -2,7 +2,15 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import {X, User, Users, Calendar, Hash} from 'lucide-react';
 import { useAppSelector} from "@/store/hook";
+import {useDispatch} from "react-redux";
 
+const formatDate = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = (d.getMonth() + 1).toString().padStart(2, '0');
+    const day = d.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+};
 // Main App component
 const AddNewPopUp = ({}) => {
     const actionType = useAppSelector(state => state.actionType.value)
@@ -14,7 +22,7 @@ const AddNewPopUp = ({}) => {
     const weekdays = [
         'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy', 'Chủ Nhật'
     ];
-
+    const [week,setWeek] = useState([]);
     useEffect(() => {
         if(isModalOpen){
             setAnimate(true);
@@ -33,10 +41,36 @@ const AddNewPopUp = ({}) => {
         setSelectedDay('');
         setNumberOfSessions(1);
     }, []);
+    const dispatch = useDispatch();
+    const classCount = useAppSelector(state => state.classCountData.list)
+    const dateCount = useAppSelector(state => state.date.value)
+    useEffect(() => {
+        const newnew = []
+        for (let i = 0;i < 7;i++){
+            const newDate = new Date(dateCount)
+            newDate.setDate(newDate.getDate() + i);
+            newnew.push(formatDate(newDate));
+        }
+        setWeek(newnew);
+    }, [dateCount]);
 
     const handleSubmit = ((e) => {
         e.preventDefault();
-        console.log(selectedDay,studentName,numberOfSessions);
+        if(!classCount) return
+        const str = classCount[classCount.length -1].id;
+        const trueId = str.replace(/\D/g, "");
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, "0");
+        const minutes = now.getMinutes().toString().padStart(2, "0");
+        const time = `${hours}:${minutes}`;
+        const trueIndex = weekdays.findIndex(itm => itm == selectedDay)
+        const value = {
+            id : `t${Number(trueId) + 1}`,
+            name : studentName,
+            time: time,
+            day: week[trueIndex]
+        }
+        console.log(value)
     })
 
     const secondary = 'emerald-500';
@@ -90,7 +124,6 @@ const AddNewPopUp = ({}) => {
                             <X className="w-6 h-6" />
                         </button>
                     </div>
-
                     {/* Form Nội dung */}
                         <form onSubmit={handleSubmit} className="mt-4 space-y-4">
                             {/* Tên Học Sinh */}

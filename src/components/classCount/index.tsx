@@ -2,6 +2,8 @@ import React, {useState, useCallback, useMemo, useEffect, useRef} from 'react';
 import { User, Clock, PackageOpen } from 'lucide-react';
 import {useAppSelector} from "@/store/hook";
 import ClassCountData from "@/service/classCount";
+import {useDispatch} from "react-redux";
+import {setClassCount} from "@/store/slices/classCount";
 // Dữ liệu mẫu ban đầu
 // const initialData = [
 //     { id: 't1', name: 'Hùng: Thiết kế landing page', day: '2025-12-01', time: '10:00' },
@@ -119,12 +121,21 @@ const ClassCount = () => {
         '#BAE1FF', // Pastel Blue
         '#F9DBF9', // Lavender
     ];
+    const dispatch = useDispatch();
+    const classCountData = useAppSelector(
+        state => state.classCountData.list
+    );
+
     useEffect(() => {
         ClassCountData.getClassCount().then(res => {
-                setTasks(res.data)
-            }
-        )
+            dispatch(setClassCount(res.data));
+        });
     }, []);
+
+    useEffect(() => {
+        setTasks(classCountData);
+    }, [classCountData]);
+
     const [currentDate, setCurrentDate] = useState(new Date());
     const getDateValue = useAppSelector(state => state.date)
     useEffect(() => {
