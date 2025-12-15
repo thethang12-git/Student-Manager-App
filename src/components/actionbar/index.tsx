@@ -3,6 +3,7 @@ import {ChevronDown, Edit, List, Users} from "lucide-react";
 import React from "react";
 import {useAppDispatch, useAppSelector} from "@/store/hook";
 import {setValue} from "@/store/slices/dateCountData";
+import AddNewPopUp from "@/components/addNewPopUp";
 
 const formatDate = (date: string): string => {
     const d = new Date(date);
@@ -60,10 +61,7 @@ export default function ActionBar ({isOpen}:{isOpen:boolean}) {
                 </div>
 
                 {/* Button Thêm Học Sinh */}
-                <button className="flex items-center bg-indigo-600 text-white font-medium py-2 px-4 rounded-lg shadow-md hover:bg-indigo-700 transition-colors">
-                    <Users className="w-4 h-4 mr-2" />
-                    Thêm Học sinh
-                </button>
+                <AddNewPopUp/>
 
                 {/* Button Sửa Lớp học */}
                 <button className="flex items-center text-gray-600 border border-gray-300 bg-white font-medium py-2 px-4 rounded-lg hover:bg-gray-50 transition-colors">

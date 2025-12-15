@@ -10,11 +10,16 @@ import ActionBar from "@/components/actionbar";
 import Header from "@/components/header";
 import UserProfile_Logout from "@/components/userProfile_logout";
 import CalendarPage from "@/app/Calendar/page";
-import {useAppSelector} from "@/store/hook";
+import {useAppDispatch, useAppSelector} from "@/store/hook";
 import ClassCount from "@/components/classCount";
+import AddNewPopUp from "@/components/addNewPopUp";
+import {useDispatch} from "react-redux";
+import {setValue} from "@/store/slices/actionMenuType";
 
 // Component chính (Đã đổi tên thành Home)
 const Home = () => {
+    const actionType = useAppSelector(state => state.actionType.value)
+    const dispatch = useDispatch();
     const [students, setStudents] = useState<any[]>([]);
     const [activeMenu, setActiveMenu] = useState('manage');
     const isFirstRender = useRef(true);
@@ -66,7 +71,7 @@ const Home = () => {
                                     icon={item.icon}
                                     label={item.label}
                                     isActive={item.id === activeMenu}
-                                    onClick={() => {setActiveMenu(item.id)}}
+                                    onClick={() => {dispatch(setValue(item.id));setActiveMenu(item.id)}}
                                 />
                             ))}
                         </nav>

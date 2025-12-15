@@ -2,11 +2,13 @@ import { configureStore } from '@reduxjs/toolkit';
 import userReducer from "./slices/user";
 import studentReducer from "./slices/studentList"
 import dateSliceReducer from "./slices/dateCountData"
+import actionType from "@/store/slices/actionMenuType";
 export const store = configureStore({
     reducer: {
         user: userReducer,
         student: studentReducer,
-        date: dateSliceReducer
+        date: dateSliceReducer,
+        actionType:actionType
     },
 });
 

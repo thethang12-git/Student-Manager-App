@@ -81,7 +81,7 @@ export default function CalendarPage() {
                 eventDragStart={(info) => {
                     const mirror = document.querySelector('.fc-event-dragging') as HTMLElement;
                     if (mirror) {
-                        const offsetX = 16; // khoảng cách từ popup hoặc padding
+                        const offsetX = 16;
                         const offsetY = 16;
                         mirror.style.left = `${info.jsEvent.pageX - offsetX}px`;
                         mirror.style.top = `${info.jsEvent.pageY - offsetY}px`;

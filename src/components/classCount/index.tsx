@@ -1,26 +1,26 @@
 import React, {useState, useCallback, useMemo, useEffect, useRef} from 'react';
 import { User, Clock, PackageOpen } from 'lucide-react';
 import {useAppSelector} from "@/store/hook";
-
+import ClassCountData from "@/service/classCount";
 // Dữ liệu mẫu ban đầu
-const initialData = [
-    { id: 't1', name: 'Hùng: Thiết kế landing page', day: '2025-12-01', time: '10:00' },
-    { id: 't2', name: 'Long: Viết báo cáo tuần', day: '2025-12-01', time: '14:30' },
-    { id: 't3', name: 'An: Họp team chiến lược Q4', day: '2025-12-02', time: '09:00' },
-    { id: 't4', name: 'Vy: Đào tạo nhân viên mới', day: '2025-12-03', time: '11:00' },
-    { id: 't5', name: 'Minh: Kiểm tra Bug hệ thống', day: '2025-12-03', time: '16:00' },
-    { id: 't6', name: 'Khoa: Phân tích dữ liệu', day: '2025-12-03', time: '13:00' },
-    { id: 't7', name: 'Linh: Chuẩn bị tài liệu', day: '2025-12-04', time: '08:00' },
-    { id: 't8', name: 'Tân: Chỉnh sửa CSS', day: '2025-12-04', time: '15:00' },
-    { id: 't9', name: 'Thảo: Gửi email marketing', day: '2025-12-05', time: '10:30' },
-    { id: 't10', name: 'Hải: Cập nhật nội dung blog', day: '2025-12-06', time: '12:00' },
-    { id: 't11', name: 'Phương: Tối ưu SEO', day: '2025-12-07', time: '09:30' },
-    { id: 't12', name: 'Quân: Lên kế hoạch sự kiện', day: '2025-12-07', time: '14:00' },
-    { id: 't13', 'name': 'Huyền: Thiết kế banner quảng cáo', day: '2025-12-02', time: '11:30' },
-    { id: 't14', 'name': 'Nam: Phát triển tính năng mới', day: '2025-12-05', time: '16:30' },
-    { id: 't15', 'name': 'Trang: Kiểm thử ứng dụng', day: '2025-12-06', time: '10:15' },
-    { id: 't16', 'name': 'Dũng: Nghiên cứu thị trường', day: '2025-12-02', time: '13:45' },
-];
+// const initialData = [
+//     { id: 't1', name: 'Hùng: Thiết kế landing page', day: '2025-12-01', time: '10:00' },
+//     { id: 't2', name: 'Long: Viết báo cáo tuần', day: '2025-12-01', time: '14:30' },
+//     { id: 't3', name: 'An: Họp team chiến lược Q4', day: '2025-12-02', time: '09:00' },
+//     { id: 't4', name: 'Vy: Đào tạo nhân viên mới', day: '2025-12-03', time: '11:00' },
+//     { id: 't5', name: 'Minh: Kiểm tra Bug hệ thống', day: '2025-12-03', time: '16:00' },
+//     { id: 't6', name: 'Khoa: Phân tích dữ liệu', day: '2025-12-03', time: '13:00' },
+//     { id: 't7', name: 'Linh: Chuẩn bị tài liệu', day: '2025-12-04', time: '08:00' },
+//     { id: 't8', name: 'Tân: Chỉnh sửa CSS', day: '2025-12-04', time: '15:00' },
+//     { id: 't9', name: 'Thảo: Gửi email marketing', day: '2025-12-05', time: '10:30' },
+//     { id: 't10', name: 'Hải: Cập nhật nội dung blog', day: '2025-12-06', time: '12:00' },
+//     { id: 't11', name: 'Phương: Tối ưu SEO', day: '2025-12-07', time: '09:30' },
+//     { id: 't12', name: 'Quân: Lên kế hoạch sự kiện', day: '2025-12-07', time: '14:00' },
+//     { id: 't13', 'name': 'Huyền: Thiết kế banner quảng cáo', day: '2025-12-02', time: '11:30' },
+//     { id: 't14', 'name': 'Nam: Phát triển tính năng mới', day: '2025-12-05', time: '16:30' },
+//     { id: 't15', 'name': 'Trang: Kiểm thử ứng dụng', day: '2025-12-06', time: '10:15' },
+//     { id: 't16', 'name': 'Dũng: Nghiên cứu thị trường', day: '2025-12-02', time: '13:45' },
+// ];
 
 const formatDate = (date) => {
     const d = new Date(date);
@@ -62,8 +62,6 @@ const TaskCard = ({ task, onDragStart }) => {
 // Component DayColumn (Cột Ngày)
 const DayColumn = ({ day, tasks, onDrop, onDragOver, onDragLeave }) => {
     const dayStyle = { backgroundColor: day.color };
-    const ringColor = day.color.replace('FF', '50').replace('C4', '50').replace('D2', '50').replace('E7', '50').replace('E5', '50').replace('B2', '50').replace('BBD0', '50');
-
     return (
         <div
             className="flex flex-col h-full min-w-[25%] mx-2 p-1 rounded-[24px] shadow-xl bg-white/70 backdrop-blur-sm border-4 border-white transform hover:shadow-2xl transition-all duration-300"
@@ -108,11 +106,10 @@ const DayColumn = ({ day, tasks, onDrop, onDragOver, onDragLeave }) => {
 };
 
 const ClassCount = () => {
-    const [tasks, setTasks] = useState(initialData);
+    const [tasks, setTasks] = useState([]);
     const [week, setWeek] = useState([]);
     const [isDragging,setDragging] = useState(false);
     const weekDay = ['Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy', 'Chủ Nhật'];
-
     const weekColor = [
         '#AEC6CF', // Soft Blue-Gray
         '#FFB3BA', // Carnation Pink
@@ -122,6 +119,12 @@ const ClassCount = () => {
         '#BAE1FF', // Pastel Blue
         '#F9DBF9', // Lavender
     ];
+    useEffect(() => {
+        ClassCountData.getClassCount().then(res => {
+                setTasks(res.data)
+            }
+        )
+    }, []);
     const [currentDate, setCurrentDate] = useState(new Date());
     const getDateValue = useAppSelector(state => state.date)
     useEffect(() => {
@@ -193,7 +196,6 @@ const ClassCount = () => {
             return acc;
         }, {});
     }, [tasks, week]);
-
     return (
         <div className="h-100 bg-pink-50 font-sans p-6 pb-0 pt-0 overflow-auto relative">
             <div
