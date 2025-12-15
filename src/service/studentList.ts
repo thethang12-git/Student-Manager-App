@@ -12,5 +12,8 @@ class StudentService {
             return console.log(err);
         }
     }
+    static async addStudent(value:any){
+        return await axios.post("http://localhost:3001/students",value)
+    }
 }
 export default StudentService;

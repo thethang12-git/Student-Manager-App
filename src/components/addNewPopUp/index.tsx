@@ -59,23 +59,29 @@ const AddNewPopUp = ({}) => {
     const handleSubmit = ((e) => {
         e.preventDefault();
         if(!classCount) return
-        const str = classCount[classCount.length -1].id;
-        const trueId = str.replace(/\D/g, "");
-        const now = new Date();
-        const hours = now.getHours().toString().padStart(2, "0");
-        const minutes = now.getMinutes().toString().padStart(2, "0");
-        const time = `${hours}:${minutes}`;
-        const trueIndex = weekdays.findIndex(itm => itm == selectedDay)
-        const value = {
-            id : `t${Number(trueId) + 1}`,
-            name : studentName,
-            time: time,
-            day: week[trueIndex]
+        if(actionType == 'classCount') {
+            const str = classCount[classCount.length -1].id;
+            const trueId = str.replace(/\D/g, "");
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, "0");
+            const minutes = now.getMinutes().toString().padStart(2, "0");
+            const time = `${hours}:${minutes}`;
+            const trueIndex = weekdays.findIndex(itm => itm == selectedDay)
+            const value = {
+                id : `t${Number(trueId) + 1}`,
+                name : studentName,
+                time: time,
+                day: week[trueIndex]
+            }
+            dispatch(addClass(value));
+            setTimeout(() => {ClassCountData.updateData(value)}, 1000);
+            closeModal();
+            console.log(value)
         }
-        dispatch(addClass(value));
-        setTimeout(() => {ClassCountData.updateData(value)}, 1000);
-        closeModal();
-        console.log(value)
+        else if(actionType == 'manage'){
+            console.log('add student')
+            // closeModal();
+        }
     })
 
     const secondary = 'emerald-500';
