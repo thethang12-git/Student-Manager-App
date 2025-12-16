@@ -269,11 +269,37 @@ const AddNewPopUp = ({}) => {
                                             </label>
                                             <input
                                                 id="age"
-                                                type="number"
+                                                type="text"
                                                 value={age}
-                                                onChange={(e) => setAge(e.target.value)}
                                                 placeholder="Nhập tuổi"
-                                                min="1"
+                                                onChange ={(e) => {
+                                                    const value = e.target.value;
+                                                    if (value === "" || /^[1-2][0-9]?$/.test(value)) {
+                                                        setAge(value);
+                                                    }
+                                                }}
+                                                inputMode='numeric'
+                                                className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-${secondary} focus:border-${secondary} transition duration-150 ease-in-out [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}
+                                                required
+                                            />
+                                        </div>
+                                        <div>
+                                            <label htmlFor='studentClass' style={{display:'flex'}} className="flex items-center text-sm font-medium text-gray-700 mb-1">
+                                                <Cake className="w-4 h-4 mr-2 text-gray-500"/> Lớp
+                                            </label>
+                                            <input
+                                                id="studentClass"
+                                                type="text"
+                                                value={studentClass}
+                                                onChange={(e) => {
+                                                    const value = e.target.value;
+                                                    if (value === "" || /^[1-5]$/.test(value)) {
+                                                        setStudentClass(value);
+                                                    }
+                                                }} 
+                                                inputMode='numeric' 
+                                                placeholder="Nhập lớp"
+                                                maxLength={1}
                                                 className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-${secondary} focus:border-${secondary} transition duration-150 ease-in-out [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}
                                                 required
                                             />
