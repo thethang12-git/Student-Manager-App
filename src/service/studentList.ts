@@ -1,5 +1,7 @@
 import axios from "axios";
 
+
+
 class StudentService {
     static async getData() {
         return await axios.get("http://localhost:3001/students");

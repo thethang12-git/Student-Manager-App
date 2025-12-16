@@ -1,10 +1,13 @@
 "use client"
 import React, {useState, useCallback, useEffect, useRef} from 'react';
-import {X, User, Users, Calendar, Hash, Upload} from 'lucide-react';
+import {X, User, Users, Calendar, Hash, Upload, Cake} from 'lucide-react';
 import { useAppSelector} from "@/store/hook";
 import {useDispatch} from "react-redux";
 import { addClass } from '@/store/slices/classCount';
 import ClassCountData from '@/service/classCount';
+import {uploadImage} from "@/service/uploadImg";
+import DatePickerComp from "@/components/addNewPopUp/datePickerComp";
+import dayjs, {Dayjs} from "dayjs";
 
 const formatDate = (date) => {
     const d = new Date(date);
@@ -32,6 +35,8 @@ const AddNewPopUp = ({}) => {
     const [imageFile, setImageFile] = useState(null);
     const [previewImage, setPreviewImage] = useState(null);
     const [studentClass, setStudentClass] = useState('');
+    const [age, setAge] = useState('');
+    const [startDate, setStartDate] = React.useState<Dayjs | null>(dayjs());
     const fileInputRef = useRef<HTMLInputElement>(null);
     const weekdays = [
         'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy', 'Chủ Nhật'
@@ -59,6 +64,8 @@ const AddNewPopUp = ({}) => {
         setImageFile(null);
         setStudentClass('')
         setPreviewImage(null);
+        setAge('')
+        setStartDate(null)
         if (fileInputRef.current) {
             fileInputRef.current.value = '';
         }
@@ -101,8 +108,9 @@ const AddNewPopUp = ({}) => {
             console.log(value)
         }
         else if(actionType == 'manage'){
-            console.log('add student')
-            // closeModal();
+            if(imageFile){
+                uploadImage(imageFile).then(r => console.log(r));
+            }
         }
     })
     const MAX_SIZE = 10 * 1024 * 1024; // 10MB
@@ -252,6 +260,41 @@ const AddNewPopUp = ({}) => {
                             ) }
                             {actionType == "manage" && (
                                 <>
+                                    {/**/}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {/* Trường Tuổi (Age) */}
+                                        <div>
+                                            <label htmlFor='age' style={{display:'flex'}} className="flex items-center text-sm font-medium text-gray-700 mb-1">
+                                                <Cake className="w-4 h-4 mr-2 text-gray-500"/> Tuổi
+                                            </label>
+                                            <input
+                                                id="age"
+                                                type="number"
+                                                value={age}
+                                                onChange={(e) => setAge(e.target.value)}
+                                                placeholder="Nhập tuổi"
+                                                min="1"
+                                                className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-${secondary} focus:border-${secondary} transition duration-150 ease-in-out [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+                                    {/**/}
+                                    {/* Trường Ngày Bắt Đầu (Start Date) - Tối ưu hóa Date Picker */}
+                                    <div >
+                                        <label style={{display:'flex'}} htmlFor="startDate" className="flex items-center text-sm font-medium text-gray-700 mb-1">
+                                            <Calendar className="w-4 h-4 mr-2 text-gray-500"/> Ngày Bắt Đầu
+                                        </label>
+                                        {/*<input*/}
+                                        {/*    id="startDate"*/}
+                                        {/*    type="date"*/}
+                                        {/*    value={startDate}*/}
+                                        {/*    onChange={(e) => setStartDate(e.target.value)}*/}
+                                        {/*    className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-${secondary} focus:border-${secondary} transition duration-150 ease-in-out [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}*/}
+                                        {/*    required*/}
+                                        {/*/>*/}
+                                        <DatePickerComp startDate={startDate} setStartDate={setStartDate}/>
+                                    </div>
                                     <div className="pt-2">
                                         <label style={{display:'flex'}} className="block text-sm font-medium text-gray-700 flex items-center">
                                             <Upload className="w-4 h-4 mr-2 text-gray-500" />
@@ -297,7 +340,6 @@ const AddNewPopUp = ({}) => {
                                                 </div>
                                             </div>
                                         </label>
-
                                     </div>
                                 </>
                             )}

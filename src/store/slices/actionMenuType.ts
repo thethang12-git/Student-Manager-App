@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: { value: string } = {
-    value: "",
+    value: "manage",
 };
 
 export const actionType = createSlice({
