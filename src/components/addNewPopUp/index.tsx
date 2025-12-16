@@ -1,6 +1,6 @@
 "use client"
-import React, {useState, useCallback, useEffect} from 'react';
-import {X, User, Users, Calendar, Hash} from 'lucide-react';
+import React, {useState, useCallback, useEffect, useRef} from 'react';
+import {X, User, Users, Calendar, Hash, Upload} from 'lucide-react';
 import { useAppSelector} from "@/store/hook";
 import {useDispatch} from "react-redux";
 import { addClass } from '@/store/slices/classCount';
@@ -13,14 +13,26 @@ const formatDate = (date) => {
     const day = d.getDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
 };
+const SkeletonLine = ({ width = 'w-full', height = 'h-4', className = 'mb-2' }) => (
+    <div
+        // Đổi màu nền từ bg-gray-200 sang bg-gray-400 và loại bỏ animate-pulse
+        className={`bg-gray-400 rounded-full ${width} ${height} ${className}`}
+    />
+);
 // Main App component
 const AddNewPopUp = ({}) => {
+    const focusHere = useRef<HTMLInputElement>(null);
     const actionType = useAppSelector(state => state.actionType.value)
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [studentName, setStudentName] = useState('');
     const [animate,setAnimate] = useState(false);
     const [selectedDay, setSelectedDay] = useState('');
     const [numberOfSessions, setNumberOfSessions] = useState(1);
+    const [fileName, setFileName] = useState('');
+    const [imageFile, setImageFile] = useState(null);
+    const [previewImage, setPreviewImage] = useState(null);
+    const [studentClass, setStudentClass] = useState('');
+    const fileInputRef = useRef<HTMLInputElement>(null);
     const weekdays = [
         'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy', 'Chủ Nhật'
     ];
@@ -35,6 +47,7 @@ const AddNewPopUp = ({}) => {
     }, [isModalOpen]);
     const openModal = useCallback(() => {
         setIsModalOpen(true);
+        handleFocus()
     }, []);
 
     const closeModal = useCallback(() => {
@@ -42,6 +55,13 @@ const AddNewPopUp = ({}) => {
         setStudentName('');
         setSelectedDay('');
         setNumberOfSessions(1);
+        setFileName('');
+        setImageFile(null);
+        setStudentClass('')
+        setPreviewImage(null);
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+        }
     }, []);
     const dispatch = useDispatch();
     const classCount = useAppSelector(state => state.classCountData.list)
@@ -55,7 +75,9 @@ const AddNewPopUp = ({}) => {
         }
         setWeek(newnew);
     }, [dateCount]);
-
+    const handleFocus = () => {
+        focusHere.current.focus();
+    }
     const handleSubmit = ((e) => {
         e.preventDefault();
         if(!classCount) return
@@ -83,7 +105,45 @@ const AddNewPopUp = ({}) => {
             // closeModal();
         }
     })
+    const MAX_SIZE = 10 * 1024 * 1024; // 10MB
+    const VALID_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+    const handleFileChange = ((e) => {
+        const file = e.target.files[0];
 
+        if (!file) {
+            setImageFile(null);
+            setFileName('');
+            setPreviewImage(null);
+            return;
+        }
+
+        // Validate type
+        if (!VALID_TYPES.includes(file.type)) {
+            alert("Chỉ cho phép file ảnh (jpg, png, gif, webp)");
+            setImageFile(null);
+            setFileName('');
+            return;
+        }
+
+        // Validate size
+        if (file.size > MAX_SIZE) {
+            alert("File quá lớn (tối đa 10MB)");
+            setImageFile(null);
+            setFileName('');
+            return;
+        }
+
+        setImageFile(file);
+        setFileName(file.name);
+        console.log(imageFile);
+        const objectUrl:any = URL.createObjectURL(file);
+        setPreviewImage(objectUrl);
+    })
+    useEffect(() => {
+        return () => {
+            if (previewImage) URL.revokeObjectURL(previewImage);
+        };
+    }, [previewImage]);
     const secondary = 'emerald-500';
     return (
         <>
@@ -143,6 +203,7 @@ const AddNewPopUp = ({}) => {
                                     <User className="w-4 h-4 mr-2 text-gray-500"/> Tên Học Sinh
                                 </label>
                                 <input
+                                    ref={focusHere}
                                     type="text"
                                     id="studentName"
                                     placeholder="Nhập tên học sinh..."
@@ -189,6 +250,57 @@ const AddNewPopUp = ({}) => {
                                     </div>
                                 </>
                             ) }
+                            {actionType == "manage" && (
+                                <>
+                                    <div className="pt-2">
+                                        <label style={{display:'flex'}} className="block text-sm font-medium text-gray-700 flex items-center">
+                                            <Upload className="w-4 h-4 mr-2 text-gray-500" />
+                                            Tải Ảnh Đại Diện
+                                        </label>
+                                        <label style={{width:'100%'}} htmlFor="image-upload">
+                                            <div className="mt-1 flex justify-center px-3 pt-2 border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 hover:bg-gray-100 transition duration-150 cursor-pointer">
+                                                <div style={{display:'flex',flexDirection:'column'}} className="space-y-1 text-center align-items-center w-full">
+                                                    {previewImage ? (
+                                                        <div className="bg-white w-full pb-2">
+                                                            {/* Khung chứa Danh Thiếp (Hiển thị theo chiều ngang) */}
+                                                            <div className="flex items-start space-x-3">
+                                                                <div>
+                                                                    <img style={{width:'5rem',height:'5rem',borderRadius:'100%',textAlign:"left"}} src={previewImage} alt="Preview"  className="max-w-full rounded-lg shadow-md" />
+                                                                </div>
+                                                                {/* 2. Skeleton Loading cho Nội Dung (Theo chiều dọc) */}
+                                                                <div className="flex-grow pt-1">
+                                                                    {/* Tên */}
+                                                                    <SkeletonLine width="w-full" height="h-6" className="mb-3" />
+
+                                                                    {/* Chức danh / Mô tả 1 */}
+                                                                    <SkeletonLine width="w-full" height="h-4" className="mb-2" />
+
+                                                                    {/* Mô tả 2 */}
+                                                                    <SkeletonLine width="w-full" height="h-4" className="mb-0" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        // <div style={{width:'100% '}}>
+                                                        //     <img style={{width:'5rem',height:'5rem',borderRadius:'100%',textAlign:"left"}} src={previewImage} alt="Preview"  className="max-w-full max-h-64 rounded-lg shadow-md" />
+                                                        // </div>
+                                                    ) : <Upload className="mx-auto h-12 w-12 text-gray-400" />}
+                                                    <div className="flex text-sm text-gray-600">
+                                                        <input ref={fileInputRef} id="image-upload" name="image-upload" type="file" className="sr-only" onChange={handleFileChange} accept="image/*" />
+                                                    </div>
+                                                    {!previewImage && (<p className="text-xs text-gray-500">Tải ảnh lên ở đây</p>) }
+                                                    {fileName && (
+                                                        <p className="text-sm font-semibold text-green-600 mt-2 p-2 bg-green-100 rounded-lg">
+                                                            Đã chọn: {fileName}
+                                                        </p>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </label>
+
+                                    </div>
+                                </>
+                            )}
                             <div className="flex justify-end pt-2">
                                 <button
                                     style={{background:`#10B981`,borderRadius:"1.2em"}}
