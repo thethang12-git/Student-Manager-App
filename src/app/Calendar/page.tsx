@@ -46,7 +46,7 @@ export default function CalendarPage() {
             <CreateNew setLoadData ={setLoadData} formikData = {formikData} setFormikData = {setFormikData} show = {show} setShow={setShow}/>
             <FullCalendar
                 timeZone='UTC'
-                aspectRatio={2.6}
+                aspectRatio={2}
                 expandRows={true}
                 plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin,googleCalendarPlugin ]}
                 locale={'vi'}

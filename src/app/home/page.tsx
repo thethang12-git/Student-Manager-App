@@ -54,7 +54,7 @@ const Home = () => {
         setTimeout(() => setAnimationMap(prev => ({...prev, [activeMenu]: !prev[activeMenu]})),200)
     }, [activeMenu]);
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-gray-100 no-select">
             <div className="bg-white flex w-full min-h-screen overflow-hidden">
                 {/* Sidebar */}
                 <aside className="w-68 p-6 flex flex-col justify-between border-r border-gray-100 bg-white">

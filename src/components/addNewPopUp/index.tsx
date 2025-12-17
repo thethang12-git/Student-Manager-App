@@ -8,12 +8,22 @@ import ClassCountData from '@/service/classCount';
 import {uploadImage} from "@/service/uploadImg";
 import DatePickerComp from "@/components/addNewPopUp/datePickerComp";
 import dayjs, {Dayjs} from "dayjs";
+import Snackbar from "@/components/snackbar";
+import StudentService from "@/service/studentList";
+import {addStudent} from "@/store/slices/studentList";
 
-const formatDate = (date) => {
+const findLastWord = (str: string) => {
+    const words = str.trim().split(" ").filter(Boolean);
+    const lastWord = words.pop();
+    return lastWord ? lastWord[0].toUpperCase() : "";
+}
+
+const formatDate = (date:any,forRead?:boolean) => {
     const d = new Date(date);
     const year = d.getFullYear();
     const month = (d.getMonth() + 1).toString().padStart(2, '0');
     const day = d.getDate().toString().padStart(2, '0');
+    if(forRead){return `${day}-${month}-${year}`}
     return `${year}-${month}-${day}`;
 };
 const SkeletonLine = ({ width = 'w-full', height = 'h-4', className = 'mb-2' }) => (
@@ -38,6 +48,13 @@ const AddNewPopUp = ({}) => {
     const [age, setAge] = useState('');
     const [startDate, setStartDate] = React.useState<Dayjs | null>(dayjs());
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const studentListAll = useAppSelector(state => state.student.list)
+    // snackbar
+    const [loading, setLoading] = useState(false);
+    const [open, setOpen] = React.useState(false);
+    const [message, setMessage] = React.useState("");
+    const [type, setType] = React.useState('')
+    //
     const weekdays = [
         'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy', 'Chủ Nhật'
     ];
@@ -45,6 +62,7 @@ const AddNewPopUp = ({}) => {
     useEffect(() => {
         if(isModalOpen){
             setAnimate(true);
+            setLoading(false);
         }
         else {
             setAnimate(false);
@@ -85,6 +103,7 @@ const AddNewPopUp = ({}) => {
     const handleFocus = () => {
         focusHere.current.focus();
     }
+    const validate= age && studentClass && startDate && studentName
     const handleSubmit = ((e) => {
         e.preventDefault();
         if(!classCount) return
@@ -108,8 +127,66 @@ const AddNewPopUp = ({}) => {
             console.log(value)
         }
         else if(actionType == 'manage'){
-            if(imageFile){
-                uploadImage(imageFile).then(r => console.log(r));
+            const getLastId = studentListAll[studentListAll.length -1].id;
+            if(validate){
+                console.log(imageFile)
+                if(imageFile) {
+                    setLoading(true);
+                    uploadImage(imageFile).then(r => {
+                        const newData = {
+                            id: (Number(getLastId) +1).toString() ,
+                            name: studentName,
+                            age: age,
+                            date: formatDate(startDate,true),
+                            class:studentClass,
+                            avatar: r,
+                            count: 0,
+                        }
+                        StudentService.addStudent(newData).then(res => {
+                            dispatch(addStudent(newData));
+                            setMessage('thêm mới thành công')
+                            setType('success')
+                            setOpen(true)
+                            setTimeout(() => {
+                                closeModal();
+                                setLoading(false);
+                            },1000)
+                        } )
+                    });
+                }
+                else {
+                    setLoading(true);
+                    const avatarUrl = `https://placehold.co/40x40/9333ea/ffffff?text=${findLastWord(studentName)}`;
+                    const img = new Image();
+                    img.src = avatarUrl;
+                    img.onload = () => {
+                        const newData = {
+                            id: (Number(getLastId) +1).toString(),
+                            name: studentName,
+                            age: age,
+                            date: formatDate(startDate,true),
+                            class: studentClass,
+                            avatar: avatarUrl,
+                            count: 0,
+                        };
+                        StudentService.addStudent(newData).then(res => {
+                            dispatch(addStudent(newData));
+                            setMessage('thêm mới thành công');
+                            setType('success');
+                            setOpen(true);
+                            setTimeout(() => {
+                                closeModal();
+                                setLoading(false);
+                            },1000);
+                        });
+                    };
+
+                }
+            }
+            else {
+                setMessage('chưa đủ trường thông tin')
+                setType('error')
+                setOpen(true)
             }
         }
     })
@@ -127,7 +204,9 @@ const AddNewPopUp = ({}) => {
 
         // Validate type
         if (!VALID_TYPES.includes(file.type)) {
-            alert("Chỉ cho phép file ảnh (jpg, png, gif, webp)");
+            setMessage('Chỉ cho phép file ảnh (jpg, png, gif, webp)')
+            setType('error')
+            setOpen(true)
             setImageFile(null);
             setFileName('');
             return;
@@ -135,7 +214,9 @@ const AddNewPopUp = ({}) => {
 
         // Validate size
         if (file.size > MAX_SIZE) {
-            alert("File quá lớn (tối đa 10MB)");
+            setMessage('File quá lớn (tối đa 10MB)')
+            setType('error')
+            setOpen(true)
             setImageFile(null);
             setFileName('');
             return;
@@ -143,7 +224,6 @@ const AddNewPopUp = ({}) => {
 
         setImageFile(file);
         setFileName(file.name);
-        console.log(imageFile);
         const objectUrl:any = URL.createObjectURL(file);
         setPreviewImage(objectUrl);
     })
@@ -155,6 +235,7 @@ const AddNewPopUp = ({}) => {
     const secondary = 'emerald-500';
     return (
         <>
+            <Snackbar isOpen={open} message={message} type={type || 'error'} setOpen={setOpen} />
             <button className="flex items-center bg-indigo-600 text-white font-medium py-2 px-4 rounded-lg shadow-md hover:bg-indigo-700 transition-colors" onClick={openModal}>
                 <Users className="w-4 h-4 mr-2" />
                 Thêm Học sinh
@@ -371,11 +452,22 @@ const AddNewPopUp = ({}) => {
                             )}
                             <div className="flex justify-end pt-2">
                                 <button
+                                    disabled={loading}
                                     style={{background:`#10B981`,borderRadius:"1.2em"}}
                                     type="submit"
                                     className={`w-full sm:w-auto px-6 py-3 text-white font-semibold rounded-lg shadow-md hover:bg-emerald-600 transition duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-${secondary} focus:ring-opacity-50 transform hover:shadow-lg`}
                                 >
-                                    Thêm Mới
+                                    {loading
+                                        ?
+                                        (
+                                            <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                        )
+                                        :
+                                        'Thêm mới'
+                                    }
                                 </button>
                             </div>
                         </form>

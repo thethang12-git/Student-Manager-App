@@ -1,6 +1,10 @@
 "use client"
 import React, {useState, useCallback, useMemo, useEffect} from 'react';
 import { User, Clock, PackageOpen } from 'lucide-react';
+import {addClass} from "@/store/slices/classCount";
+import ClassCountData from "@/service/classCount";
+import {uploadImage} from "@/service/uploadImg";
+import StudentService from "@/service/studentList";
 
 // Dữ liệu mẫu ban đầu
 const initialData = [
@@ -146,3 +150,61 @@ export const test = () => {
 };
 
 export default test;
+
+
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if(!classCount) return
+  if(actionType == 'classCount') {
+    const str = classCount[classCount.length -1].id;
+    const trueId = str.replace(/\D/g, "");
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, "0");
+    const minutes = now.getMinutes().toString().padStart(2, "0");
+    const time = `${hours}:${minutes}`;
+    const trueIndex = weekdays.findIndex(itm => itm == selectedDay)
+    const value = {
+      id : `t${Number(trueId) + 1}`,
+      name : studentName,
+      time: time,
+      day: week[trueIndex]
+    }
+    dispatch(addClass(value));
+    setTimeout(() => {ClassCountData.updateData(value)}, 1000);
+    closeModal();
+    console.log(value)
+  }
+  else if(actionType == 'manage'){
+    if(imageFile && validate){
+      try {
+        setLoading(true);
+        const avatarUrl = await uploadImage(imageFile);
+        const newData = {
+          name: studentName,
+          age,
+          date: startDate,
+          class: studentClass,
+          avatar: avatarUrl,
+          count: 0,
+        };
+        await StudentService.addStudent(newData);
+        setMessage('Thêm mới thành công');
+        setType('success');
+        setOpen(true);
+        setTimeout(() => closeModal(), 1000);
+        console.log(newData);
+      } catch (error) {
+        console.error(error);
+        setMessage('Có lỗi xảy ra');
+        setType('error');
+        setOpen(true);
+      } finally {
+        setLoading(false);
+      }
+    }
+    else {
+      alert('chưa đủ trường thông tin')
+    }
+  }
+}
