@@ -19,7 +19,8 @@ const findLastWord = (str: string) => {
 }
 
 const formatDate = (date:any,forRead?:boolean) => {
-    const d = new Date(date);
+    if (!date) return;
+    const d = date instanceof Date ? new Date(date) : date;
     const year = d.getFullYear();
     const month = (d.getMonth() + 1).toString().padStart(2, '0');
     const day = d.getDate().toString().padStart(2, '0');
@@ -92,13 +93,20 @@ const AddNewPopUp = ({}) => {
     const classCount = useAppSelector(state => state.classCountData.list)
     const dateCount = useAppSelector(state => state.date.value)
     useEffect(() => {
-        const newnew = []
-        for (let i = 0;i < 7;i++){
-            const newDate = new Date(dateCount)
-            newDate.setDate(newDate.getDate() + i);
-            newnew.push(formatDate(newDate));
-        }
-        setWeek(newnew);
+        const start = new Date()
+        const getStartDate = start.getDay() == 0 ? 7 : start.getDay();
+        const startDate = start.getDate() - getStartDate +1
+        start.setDate(startDate);
+        const Monday = new Date(formatDate(start))
+        setWeek(():any => {
+            const newnew = []
+            for (let i = 0;i < 7;i++){
+                const newDate = new Date(Monday)
+                newDate.setDate(newDate.getDate() + i);
+                newnew.push(formatDate(newDate));
+            }
+            return setWeek(newnew);
+        })
     }, [dateCount]);
     const handleFocus = () => {
         focusHere.current.focus();
@@ -127,9 +135,8 @@ const AddNewPopUp = ({}) => {
             console.log(value)
         }
         else if(actionType == 'manage'){
-            const getLastId = studentListAll[studentListAll.length -1].id;
+            const getLastId = studentListAll.length > 0 ? studentListAll[studentListAll.length -1].id : '0';
             if(validate){
-                console.log(imageFile)
                 if(imageFile) {
                     setLoading(true);
                     uploadImage(imageFile).then(r => {
@@ -137,7 +144,7 @@ const AddNewPopUp = ({}) => {
                             id: (Number(getLastId) +1).toString() ,
                             name: studentName,
                             age: age,
-                            date: formatDate(startDate,true),
+                            date: formatDate(startDate,true) || formatDate(new Date(),true),
                             class:studentClass,
                             avatar: r,
                             count: 0,
@@ -164,7 +171,7 @@ const AddNewPopUp = ({}) => {
                             id: (Number(getLastId) +1).toString(),
                             name: studentName,
                             age: age,
-                            date: formatDate(startDate,true),
+                            date: formatDate(startDate,true) || formatDate(new Date(),true),
                             class: studentClass,
                             avatar: avatarUrl,
                             count: 0,
