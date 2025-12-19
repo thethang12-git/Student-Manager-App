@@ -15,7 +15,7 @@
       "password": "123123",
       "role": "parent",
       "avatar": "https://avatardep.info/wp-content/uploads/2024/07/hinh-anh-gia-dinh-4-nguoi-chibi-25.jpg",
-      "studentId": null
+      "studentId": "1"
     }
   ],
   "events": [
@@ -44,21 +44,30 @@
   "students": [
     {
       "id": "1",
-      "name": "123123",
-      "age": "23",
-      "date": "19-12-2025",
-      "class": "5",
-      "avatar": "https://placehold.co/40x40/9333ea/ffffff?text=1",
-      "count": 0
+      "name": "Nguyen A",
+      "age": 21,
+      "class": "Lớp 131233213",
+      "date": "Jan 22, 2022",
+      "avatar": "https://placehold.co/40x40/9333ea/ffffff?text=A",
+      "count": 8.1
     },
     {
       "id": "2",
-      "name": "123123",
-      "age": "23",
-      "date": "09-12-2025",
-      "class": "5",
-      "avatar": "https://res.cloudinary.com/dui5lhaq7/image/upload/v1766128519/qdae38nyzxi4rjm4prp3.jpg",
-      "count": 0
+      "name": "Nguyen B",
+      "age": 21,
+      "class": "Lớp 131233213",
+      "date": "Jan 18, 2022",
+      "avatar": "https://placehold.co/40x40/9333ea/ffffff?text=A",
+      "count": 8.2
+    },
+    {
+      "id": "3",
+      "name": "Nguyen C",
+      "age": 21,
+      "class": "Lớp 131233213",
+      "date": "Jan 2, 2022",
+      "avatar": "https://placehold.co/40x40/9333ea/ffffff?text=A",
+      "count": 8.3
     }
   ],
   "classCount": [
