@@ -20,7 +20,7 @@ const findLastWord = (str: string) => {
 
 const formatDate = (date:any,forRead?:boolean) => {
     if (!date) return;
-    const d = date instanceof Date ? new Date(date) : date;
+    const d = date instanceof Date ? date : new Date(date);
     const year = d.getFullYear();
     const month = (d.getMonth() + 1).toString().padStart(2, '0');
     const day = d.getDate().toString().padStart(2, '0');
@@ -399,14 +399,6 @@ const AddNewPopUp = ({}) => {
                                         <label style={{display:'flex'}} htmlFor="startDate" className="flex items-center text-sm font-medium text-gray-700 mb-1">
                                             <Calendar className="w-4 h-4 mr-2 text-gray-500"/> Ngày Bắt Đầu
                                         </label>
-                                        {/*<input*/}
-                                        {/*    id="startDate"*/}
-                                        {/*    type="date"*/}
-                                        {/*    value={startDate}*/}
-                                        {/*    onChange={(e) => setStartDate(e.target.value)}*/}
-                                        {/*    className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-${secondary} focus:border-${secondary} transition duration-150 ease-in-out [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}*/}
-                                        {/*    required*/}
-                                        {/*/>*/}
                                         <DatePickerComp startDate={startDate} setStartDate={setStartDate}/>
                                     </div>
                                     <div className="pt-2">
@@ -437,10 +429,6 @@ const AddNewPopUp = ({}) => {
                                                                 </div>
                                                             </div>
                                                         </div>
-
-                                                        // <div style={{width:'100% '}}>
-                                                        //     <img style={{width:'5rem',height:'5rem',borderRadius:'100%',textAlign:"left"}} src={previewImage} alt="Preview"  className="max-w-full max-h-64 rounded-lg shadow-md" />
-                                                        // </div>
                                                     ) : <Upload className="mx-auto h-12 w-12 text-gray-400" />}
                                                     <div className="flex text-sm text-gray-600">
                                                         <input ref={fileInputRef} id="image-upload" name="image-upload" type="file" className="sr-only" onChange={handleFileChange} accept="image/*" />
