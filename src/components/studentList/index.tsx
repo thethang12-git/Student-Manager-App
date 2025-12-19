@@ -1,6 +1,9 @@
 "use client"
 import React, {useEffect, useMemo, useState} from "react";
 import {ArrowUpDown, Edit, Trash2} from "lucide-react";
+import StudentService from "@/service/studentList";
+import {useDispatch} from "react-redux";
+import {deleteStudent} from "@/store/slices/studentList";
 
 
 const StudentList = ({ initialStudentsData } :any ) => {
@@ -67,7 +70,13 @@ const StudentList = ({ initialStudentsData } :any ) => {
             </th>
         );
     };
-
+    const dispatch = useDispatch();
+    const handleDelete = (id:string) => {
+        StudentService.deleteStudentById(id).then( res =>{
+            dispatch(deleteStudent(id));
+        })
+            .catch(err => console.log(err));
+    }
     const handleAction = (action, studentId) => {
         // Logic xử lý hành động (ví dụ: Xóa, Sửa)
         console.log(`${action} học sinh ID: ${studentId}`);
@@ -122,7 +131,7 @@ const StudentList = ({ initialStudentsData } :any ) => {
                                     <Edit className="w-4 h-4" />
                                 </button>
                                 <button
-                                    onClick={() => handleAction('delete', student.id)}
+                                    onClick={() => handleDelete(student.id)}
                                     className="text-red-600 hover:text-red-900 p-1 rounded-full hover:bg-red-50 transition-colors"
                                     title="Xóa"
                                 >

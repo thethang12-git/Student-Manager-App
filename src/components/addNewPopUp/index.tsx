@@ -103,7 +103,7 @@ const AddNewPopUp = ({}) => {
     const handleFocus = () => {
         focusHere.current.focus();
     }
-    const validate= age && studentClass && startDate && studentName
+    const validate= age && studentClass && studentName
     const handleSubmit = ((e) => {
         e.preventDefault();
         if(!classCount) return

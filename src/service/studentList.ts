@@ -1,7 +1,5 @@
 import axios from "axios";
 
-
-
 class StudentService {
     static async getData() {
         return await axios.get("http://localhost:3001/students");
@@ -16,6 +14,9 @@ class StudentService {
     }
     static async addStudent(value:any){
         return await axios.post("http://localhost:3001/students",value)
+    }
+    static async deleteStudentById(id:any){
+        return await axios.delete("http://localhost:3001/students/"+id);
     }
 }
 export default StudentService;
