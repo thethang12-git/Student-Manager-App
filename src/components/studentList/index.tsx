@@ -3,13 +3,27 @@ import React, {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {ArrowUpDown, Cake, Calendar, Edit, Hash, Trash2, Upload, User, Users, X} from "lucide-react";
 import StudentService from "@/service/studentList";
 import {useDispatch} from "react-redux";
-import {deleteStudent} from "@/store/slices/studentList";
+import {addStudent, deleteStudent, setList} from "@/store/slices/studentList";
 import DatePickerComp from "@/components/addNewPopUp/datePickerComp";
-import {useAppSelector} from "@/store/hook";
 import dayjs, {Dayjs} from "dayjs";
 import Snackbar from "@/components/snackbar";
 import {createPortal} from "react-dom";
+import {uploadImage} from "@/service/uploadImg";
 
+const findLastWord = (str: string) => {
+    const words = str.trim().split(" ").filter(Boolean);
+    const lastWord = words.pop();
+    return lastWord ? lastWord[0].toUpperCase() : "";
+}
+const formatDate = (date:any,forRead?:boolean) => {
+    if (!date) return;
+    const d = date instanceof Date ? date : new Date(date);
+    const year = d.getFullYear();
+    const month = (d.getMonth() + 1).toString().padStart(2, '0');
+    const day = d.getDate().toString().padStart(2, '0');
+    if(forRead){return `${day}-${month}-${year}`}
+    return `${year}-${month}-${day}`;
+};
 const SkeletonLine = ({ width = 'w-full', height = 'h-4', className = 'mb-2' }) => (
     <div
         // Đổi màu nền từ bg-gray-200 sang bg-gray-400 và loại bỏ animate-pulse
@@ -17,6 +31,7 @@ const SkeletonLine = ({ width = 'w-full', height = 'h-4', className = 'mb-2' }) 
     />
 );
 const StudentList = ({ initialStudentsData } :any ) => {
+    const [id, setId] = useState("");
     const [students, setStudents] = useState<any[]>([]);
     const dispatch = useDispatch();
     const [onEdit, setOnEdit] = useState<boolean>(false);
@@ -39,9 +54,6 @@ const StudentList = ({ initialStudentsData } :any ) => {
     const secondary = 'emerald-500';
     //
     useEffect(() => {
-        console.log(startDate)
-    }, [startDate]);
-    useEffect(() => {
         if(onEdit){
             setAnimate(true)
             setLoading(false);
@@ -61,6 +73,7 @@ const StudentList = ({ initialStudentsData } :any ) => {
     }
     const handleEdit = (id: any) => {
         StudentService.getStudentById(id).then( res => {
+            setId(id)
             setOnEdit(true)
             openModal()
             const d = dayjs(res.date, "DD-MM-YYYY");
@@ -71,8 +84,42 @@ const StudentList = ({ initialStudentsData } :any ) => {
             setPreviewImage(res.avatar)
         }).catch(err => console.log(err));
     }
+    const MAX_SIZE = 10 * 1024 * 1024; // 10MB
+    const VALID_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];
     const handleFileChange = ((e) => {
         const file = e.target.files[0];
+
+        if (!file) {
+            setImageFile(null);
+            setFileName('');
+            setPreviewImage(null);
+            fileInputRef.current.value = '';
+            return;
+        }
+
+        // Validate type
+        if (!VALID_TYPES.includes(file.type)) {
+            setMessage('Chỉ cho phép file ảnh (jpg, png, gif, webp)')
+            setType('error')
+            setOpen(true)
+            setImageFile(null);
+            setFileName('');
+            setPreviewImage(null);
+            fileInputRef.current.value = '';
+            return;
+        }
+
+        // Validate size
+        if (file.size > MAX_SIZE) {
+            setMessage('File quá lớn (tối đa 10MB)')
+            setType('error')
+            setOpen(true)
+            setImageFile(null);
+            setFileName('');
+            setPreviewImage(null);
+            fileInputRef.current.value = '';
+            return;
+        }
         setImageFile(file);
         setFileName(file.name);
         const objectUrl:any = URL.createObjectURL(file);
@@ -159,6 +206,47 @@ const StudentList = ({ initialStudentsData } :any ) => {
             </th>
         );
     };
+    const handleUpdate = async (id: string) => {
+        try {
+            setLoading(true);
+            let avatarUrl = previewEditImage;
+            if (imageFile) {
+                avatarUrl = await uploadImage(imageFile);
+            }
+            else {
+                avatarUrl = `https://placehold.co/40x40/9333ea/ffffff?text=${findLastWord(studentName)}`;
+            }
+            const data = {
+                name: studentName,
+                age: age,
+                date: formatDate(startDate, true),
+                class: studentClass,
+                avatar: avatarUrl,
+                count: 0,
+            };
+            await StudentService.updateStudent(id, data);
+            const res = await StudentService.getData();
+            dispatch(setList(res.data));
+            setMessage('Cập nhật thành công');
+            setType('success');
+            setOpen(true);
+
+            setTimeout(() => {
+                closeModal();
+                setLoading(false);
+            }, 1000);
+
+            setId('')
+
+        } catch (err) {
+            console.error(err);
+            setMessage('Cập nhật thất bại');
+            setType('error');
+            setOpen(true);
+            setLoading(false);
+        }
+    };
+
     if (!initialStudentsData) return <div> loading ...</div>;
     return (
         <div className="h-auto shadow-md rounded-xl bg-white ">
@@ -216,9 +304,9 @@ const StudentList = ({ initialStudentsData } :any ) => {
                 ))}
                 </tbody>
             </table>
+            <Snackbar isOpen={open} message={message} type={type || 'error'} setOpen={setOpen} />
             {onEdit && createPortal(
                 <>
-                    <Snackbar isOpen={open} message={message} type={type || 'error'} setOpen={setOpen} />
                     <div
                         style={{
                             width: '100%',
@@ -264,7 +352,10 @@ const StudentList = ({ initialStudentsData } :any ) => {
                                 </button>
                             </div>
                             {/* Form Nội dung */}
-                            <form onSubmit={() => console.log('ád')} className="mt-4 space-y-4">
+                            <form onSubmit={(e) => {
+                                e.preventDefault()
+                                handleUpdate(id)
+                            }} className="mt-4 space-y-4">
                                 {/* Tên Học Sinh */}
                                 <div>
                                     <label htmlFor="studentName" style={{display:'flex'}} className="flex items-center text-sm font-medium text-gray-700 mb-1">

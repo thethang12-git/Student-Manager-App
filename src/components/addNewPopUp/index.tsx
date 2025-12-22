@@ -201,11 +201,11 @@ const AddNewPopUp = ({}) => {
     const VALID_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];
     const handleFileChange = ((e) => {
         const file = e.target.files[0];
-
         if (!file) {
             setImageFile(null);
             setFileName('');
             setPreviewImage(null);
+            fileInputRef.current.value = '';
             return;
         }
 
@@ -216,6 +216,7 @@ const AddNewPopUp = ({}) => {
             setOpen(true)
             setImageFile(null);
             setFileName('');
+            fileInputRef.current.value = '';
             return;
         }
 
@@ -226,14 +227,17 @@ const AddNewPopUp = ({}) => {
             setOpen(true)
             setImageFile(null);
             setFileName('');
+            fileInputRef.current.value = '';
             return;
         }
-
         setImageFile(file);
         setFileName(file.name);
         const objectUrl:any = URL.createObjectURL(file);
         setPreviewImage(objectUrl);
     })
+    // useEffect(() => {
+    //     console.log(fileInputRef.current)
+    // }, [fileInputRef.current]);
     useEffect(() => {
         return () => {
             if (previewImage) URL.revokeObjectURL(previewImage);

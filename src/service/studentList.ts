@@ -18,5 +18,8 @@ class StudentService {
     static async deleteStudentById(id:any){
         return await axios.delete("http://localhost:3001/students/"+id);
     }
+    static async updateStudent(id: any, data: any) {
+        return axios.patch(`http://localhost:3001/students/${id}`, data);
+    }
 }
 export default StudentService;

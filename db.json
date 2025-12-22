@@ -44,30 +44,48 @@
   "students": [
     {
       "id": "1",
-      "name": "Nguyen A",
+      "name": "guyen C",
       "age": 21,
-      "class": "Lớp 131233213",
-      "date": "Jan 22, 2022",
-      "avatar": "https://placehold.co/40x40/9333ea/ffffff?text=A",
-      "count": 8.1
+      "class": "3",
+      "date": "11-12-2025",
+      "avatar": "https://placehold.co/40x40/9333ea/ffffff?text=C",
+      "count": 0
     },
     {
       "id": "2",
       "name": "Nguyen B",
       "age": 21,
-      "class": "Lớp 131233213",
-      "date": "Jan 18, 2022",
-      "avatar": "https://placehold.co/40x40/9333ea/ffffff?text=A",
-      "count": 8.2
+      "class": "1",
+      "date": "01-12-2025",
+      "avatar": "https://placehold.co/40x40/9333ea/ffffff?text=B",
+      "count": 0
     },
     {
       "id": "3",
       "name": "Nguyen C",
       "age": 21,
-      "class": "Lớp 131233213",
-      "date": "Jan 2, 2022",
+      "class": "1",
+      "date": "01-12-2025",
+      "avatar": "https://placehold.co/40x40/9333ea/ffffff?text=C",
+      "count": 0
+    },
+    {
+      "id": "4",
+      "name": "xiaoxiansheng",
+      "age": "21",
+      "date": "22-12-2025",
+      "class": "1",
+      "avatar": "https://placehold.co/40x40/9333ea/ffffff?text=X",
+      "count": 0
+    },
+    {
+      "id": "5",
+      "name": "Nguyen A",
+      "age": "21",
+      "date": "22-12-2025",
+      "class": "1",
       "avatar": "https://placehold.co/40x40/9333ea/ffffff?text=A",
-      "count": 8.3
+      "count": 0
     }
   ],
   "classCount": [
@@ -166,6 +184,18 @@
       "name": "Dũng: Nghiên cứu thị trường",
       "day": "2025-12-02",
       "time": "13:45"
+    },
+    {
+      "id": "t17",
+      "name": "ahda",
+      "time": "09:35",
+      "day": "2025-12-25"
+    },
+    {
+      "id": "t18",
+      "name": "ạhsgd",
+      "time": "09:36",
+      "day": "2025-12-22"
     }
   ]
 }
