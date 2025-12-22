@@ -36,7 +36,7 @@ const CourseItem = ({ course }:{course:any}) => (
 export  default function LesssonsTracker({courses}: {courses: any}) {
     return (
         <>
-            <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 mt-6 h-98 overflow-auto ">
+            <div className="h-full bg-white p-6 rounded-2xl shadow-lg border border-gray-100 mt-6 overflow-auto">
                 <div className="flex justify-between items-center mb-4 ">
                     <h4 className="text-lg font-semibold text-gray-800">Enrolled Courses</h4>
                     <div className="flex items-center space-x-3 text-sm text-indigo-600 font-medium">

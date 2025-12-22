@@ -12,7 +12,7 @@ const ActivityStat = ({ icon: Icon, value, label, color }) => (
 export default function LearningActivity({activity}: {activity: any}) {
     return (
         <>
-            <div className="bg-white p-2 rounded-2xl shadow-lg border border-gray-100 overflow-auto">
+            <div className="bg-white p-3 rounded-2xl shadow-lg border border-gray-100 overflow-auto">
                 <h4 className="text-lg font-semibold text-gray-800 mb-1">Learning Activity</h4>
                 <p className="text-3xl font-bold text-gray-900">{activity.totalHours}</p>
                 <p className="text-sm text-gray-500 mb-6">30 days</p>

@@ -60,42 +60,41 @@ const mockStudentData = {
 
 // --- 7. MAIN PAGE COMPONENT (Component Chính) ---
 // Tập hợp tất cả các component con. Đây là trang mà Next.js sẽ render.
-
 const StudentDetail = () => {
     const student = mockStudentData;
 
     return (
-        <div className="h-screen overflow-hidden bg-gray-50 p-8 flex flex-column min-h-0">
-            {/* Header cho trang */}
-            <header className="flex justify-between items-center mb-2">
-                <h1 className="text-3xl font-bold text-gray-900">Student Details</h1>
-                {/* Phần Search Anything và User Menu ở góc phải trên cùng */}
-                <div className="flex items-center space-x-4">
-                    <input
-                        type="text"
-                        placeholder="Search anything..."
-                        className="p-2 border border-gray-300 rounded-full text-sm w-64 focus:ring-indigo-500 focus:border-indigo-500"
-                    />
-                </div>
-            </header>
+        <div className="h-screen overflow-hidden bg-gray-50 p-8 flex flex-col">
+            {/* Header */}
+            {/*<header className="flex justify-between items-center mb-4">*/}
+            {/*    <h1 className="text-3xl font-bold text-gray-900">Student Details</h1>*/}
+            {/*    <div className="flex items-center space-x-4">*/}
+            {/*        <input*/}
+            {/*            type="text"*/}
+            {/*            placeholder="Search anything..."*/}
+            {/*            className="p-2 border border-gray-300 rounded-full text-sm w-64 focus:ring-indigo-500 focus:border-indigo-500"*/}
+            {/*        />*/}
+            {/*    </div>*/}
+            {/*</header>*/}
 
             {/* Grid Layout chính */}
-            <div className="grid grid-cols-12 gap-6 grid-rows-4">
-
-                {/* Cột Trái: Profile, Contact, Social Media (col-span-3) */}
-                <div className="col-span-12 lg:col-span-4 xl:col-span-3 max-h-screen h-fit pb-20 overflow-auto rounded-2xl" style={{ scrollbarWidth: "none" }}>
+            <div className="grid grid-cols-12 gap-6 flex-1 overflow-hidden">
+                {/* Cột Trái: Profile, Contact, Social Media */}
+                <div  className="hide-scrollbar col-span-12 lg:col-span-4 xl:col-span-3 flex flex-col  max-h-screen overflow-hidden rounded-2xl " style={{ scrollbarWidth: "none" }}>
                     <ProfileCard student={student} />
                     <ContactAndSocial student={student} />
                 </div>
 
-                {/* Cột Phải: Activity, Performance, Courses (col-span-9) */}
-                <div className="grid col-span-12 lg:col-span-8 xl:col-span-9 overflow-auto rounded-2xl grid-rows-[30%_70%] h-screen">
-                    {/* Hàng trên: Learning Activity và Performance */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Cột Phải: LearningActivity, Performance + LessonsTracker */}
+                <div className="col-span-12 lg:col-span-8 xl:col-span-9 flex flex-col h-full rounded-2xl overflow-hidden">
+                    {/* Hàng trên: LearningActivity + Performance */}
+                    <div className="grid grid-cols-2 md:grid-cols-2 gap-6">
                         <LearningActivity activity={student.activity} />
                         <Performance performance={student.performance} />
                     </div>
-                    <div className="h-full">
+
+                    {/* Hàng dưới: LessonsTracker / EnrollCourse */}
+                    <div className="flex-1 overflow-hidden">
                         <LessonsTracker courses={student.courses} />
                     </div>
                 </div>
@@ -103,5 +102,6 @@ const StudentDetail = () => {
         </div>
     );
 };
+
 
 export default StudentDetail;

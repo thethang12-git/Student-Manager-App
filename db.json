@@ -15,7 +15,7 @@
       "password": "123123",
       "role": "parent",
       "avatar": "https://avatardep.info/wp-content/uploads/2024/07/hinh-anh-gia-dinh-4-nguoi-chibi-25.jpg",
-      "studentId": "1"
+      "studentId": null
     }
   ],
   "events": [
@@ -29,14 +29,14 @@
     {
       "id": "2aab",
       "title": "sự kiện mới",
-      "start": "2025-12-11T07:30:00.000Z",
+      "start": "2025-12-03T07:30:00.000Z",
       "end": null,
       "allDay": false
     },
     {
       "id": "98fe",
       "title": "1232",
-      "start": "2025-12-03T00:00:00.000Z",
+      "start": "2025-12-11T00:00:00.000Z",
       "end": null,
       "allDay": true
     }
@@ -44,47 +44,20 @@
   "students": [
     {
       "id": "1",
-      "name": "guyen C",
-      "age": 21,
-      "class": "3",
-      "date": "11-12-2025",
-      "avatar": "https://placehold.co/40x40/9333ea/ffffff?text=C",
+      "name": "ạhdasd",
+      "age": "21",
+      "date": "22-12-2025",
+      "class": "1",
+      "avatar": "https://res.cloudinary.com/dui5lhaq7/image/upload/v1766386311/lqmfwhewgcbtngenb22a.jpg",
       "count": 0
     },
     {
       "id": "2",
-      "name": "Nguyen B",
-      "age": 21,
-      "class": "1",
-      "date": "01-12-2025",
-      "avatar": "https://placehold.co/40x40/9333ea/ffffff?text=B",
-      "count": 0
-    },
-    {
-      "id": "3",
-      "name": "Nguyen C",
-      "age": 21,
-      "class": "1",
-      "date": "01-12-2025",
-      "avatar": "https://placehold.co/40x40/9333ea/ffffff?text=C",
-      "count": 0
-    },
-    {
-      "id": "4",
-      "name": "xiaoxiansheng",
+      "name": "ạhdasd",
       "age": "21",
       "date": "22-12-2025",
       "class": "1",
-      "avatar": "https://placehold.co/40x40/9333ea/ffffff?text=X",
-      "count": 0
-    },
-    {
-      "id": "5",
-      "name": "Nguyen A",
-      "age": "21",
-      "date": "22-12-2025",
-      "class": "1",
-      "avatar": "https://placehold.co/40x40/9333ea/ffffff?text=A",
+      "avatar": "https://res.cloudinary.com/dui5lhaq7/image/upload/v1766386359/nippyj8mnyixmhcqokxd.jpg",
       "count": 0
     }
   ],
