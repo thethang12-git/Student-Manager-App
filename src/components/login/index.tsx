@@ -51,6 +51,9 @@ export default function LoginPage ()  {
                     setOpen(true)
                     setMessage('sai òy')
                     setType('warning')
+                    setTimeout(() => {
+                        setIsSubmitting(false);
+                    }, 500);
                 }
                 if (pathname !== '/login') {
                     setIsSubmitting(false);
@@ -59,9 +62,6 @@ export default function LoginPage ()  {
         })
 
     };
-    useEffect(() => {
-        console.log(reduxUser);
-    },[reduxUser]);
     return (
         <div className="min-h-screen relative flex items-center justify-center p-4 sm:p-6 font-sans overflow-hidden
                     bg-gradient-to-br from-yellow-200 via-orange-100 to-yellow-300 animate-gradient-subtle">

@@ -45,6 +45,7 @@ const StudentList = ({ initialStudentsData } :any ) => {
     const [age, setAge] = useState('');
     const [startDate, setStartDate] = React.useState<Dayjs | null>(dayjs());
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [avatar,setAvatar] = useState(null)
     // snackbar
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = React.useState(false);
@@ -82,6 +83,7 @@ const StudentList = ({ initialStudentsData } :any ) => {
             setAge(res.age)
             setStartDate(d)
             setPreviewImage(res.avatar)
+            setAvatar(res.avatar)
         }).catch(err => console.log(err));
     }
     const MAX_SIZE = 10 * 1024 * 1024; // 10MB
@@ -214,7 +216,7 @@ const StudentList = ({ initialStudentsData } :any ) => {
                 avatarUrl = await uploadImage(imageFile);
             }
             else {
-                avatarUrl = `https://placehold.co/40x40/9333ea/ffffff?text=${findLastWord(studentName)}`;
+                avatarUrl = avatar || `https://placehold.co/40x40/9333ea/ffffff?text=${findLastWord(studentName)}`;
             }
             const data = {
                 name: studentName,
@@ -235,7 +237,7 @@ const StudentList = ({ initialStudentsData } :any ) => {
                 closeModal();
                 setLoading(false);
             }, 1000);
-
+            setAvatar(null)
             setId('')
 
         } catch (err) {

@@ -1,10 +1,12 @@
 "use client"
-import React from 'react';
+import React, { use, useEffect, useState } from 'react';
 import ProfileCard from "./components/profileCard";
 import ContactAndSocial from "@/components/parentPage/components/contact";
 import LearningActivity from "@/components/parentPage/components/learningActivity";
 import Performance from "@/components/parentPage/components/performance";
 import LessonsTracker from "./components/lessonsTracker";
+import { useAppSelector } from '@/store/hook';
+import StudentService from '@/service/studentList';
 
 
 // --- 6. DATA MOCKUP (Dữ liệu giả lập) ---
@@ -35,34 +37,71 @@ const mockStudentData = {
             { day: 'Sun', study: 5, quiz: 3 },
         ]
     },
-    performance: {
-        overall: 80,
-        participation: 95,
-        quizzes: 88,
-        exams: 100,
-        quote: "Motivated by your hard efforts, repeated wins are due. Keep pushing forward!",
-    },
-    courses: [
-        { name: "French for Beginners", abbr: "FR", chapters: 18, progress: 65, score: 78, status: "Active", color: "bg-red-500" },
-        { name: "Business Communication", abbr: "BC", chapters: 22, progress: 40, score: 72, status: "New", color: "bg-blue-500" },
-        { name: "Spanish for Beginners", abbr: "SP", chapters: 30, progress: 100, score: 90, status: "Completed", color: "bg-purple-500" },
-        { name: "Content Marketing", abbr: "CM", chapters: 19, progress: 25, score: 64, status: "Active", color: "bg-teal-500" },
-        { name: "French for Beginners", abbr: "FR", chapters: 18, progress: 65, score: 78, status: "Active", color: "bg-red-500" },
-        { name: "Business Communication", abbr: "BC", chapters: 22, progress: 40, score: 72, status: "New", color: "bg-blue-500" },
-        { name: "Spanish for Beginners", abbr: "SP", chapters: 30, progress: 100, score: 90, status: "Completed", color: "bg-purple-500" },
-        { name: "Content Marketing", abbr: "CM", chapters: 19, progress: 25, score: 64, status: "Active", color: "bg-teal-500" },
-        { name: "French for Beginners", abbr: "FR", chapters: 18, progress: 65, score: 78, status: "Active", color: "bg-red-500" },
-        { name: "Business Communication", abbr: "BC", chapters: 22, progress: 40, score: 72, status: "New", color: "bg-blue-500" },
-        { name: "Spanish for Beginners", abbr: "SP", chapters: 30, progress: 100, score: 90, status: "Completed", color: "bg-purple-500" },
-        { name: "Content Marketing", abbr: "CM", chapters: 19, progress: 25, score: 64, status: "Active", color: "bg-teal-500" },
-    ]
+    // performance: {
+    //     overall: 80,
+    //     participation: 95,
+    //     quizzes: 88,
+    //     exams: 100,
+    //     quote: "Motivated by your hard efforts, repeated wins are due. Keep pushing forward!",
+    // },
+    // courses: [
+    //     { name: "French for Beginners", abbr: "FR", chapters: 18, progress: 65, score: 78, status: "Active", color: "bg-red-500" },
+    //     { name: "Business Communication", abbr: "BC", chapters: 22, progress: 40, score: 72, status: "New", color: "bg-blue-500" },
+    //     { name: "Spanish for Beginners", abbr: "SP", chapters: 30, progress: 100, score: 90, status: "Completed", color: "bg-purple-500" },
+    //     { name: "Content Marketing", abbr: "CM", chapters: 19, progress: 25, score: 64, status: "Active", color: "bg-teal-500" },
+    //     { name: "French for Beginners", abbr: "FR", chapters: 18, progress: 65, score: 78, status: "Active", color: "bg-red-500" },
+    //     { name: "Business Communication", abbr: "BC", chapters: 22, progress: 40, score: 72, status: "New", color: "bg-blue-500" },
+    //     { name: "Spanish for Beginners", abbr: "SP", chapters: 30, progress: 100, score: 90, status: "Completed", color: "bg-purple-500" },
+    //     { name: "Content Marketing", abbr: "CM", chapters: 19, progress: 25, score: 64, status: "Active", color: "bg-teal-500" },
+    //     { name: "French for Beginners", abbr: "FR", chapters: 18, progress: 65, score: 78, status: "Active", color: "bg-red-500" },
+    //     { name: "Business Communication", abbr: "BC", chapters: 22, progress: 40, score: 72, status: "New", color: "bg-blue-500" },
+    //     { name: "Spanish for Beginners", abbr: "SP", chapters: 30, progress: 100, score: 90, status: "Completed", color: "bg-purple-500" },
+    //     { name: "Content Marketing", abbr: "CM", chapters: 19, progress: 25, score: 64, status: "Active", color: "bg-teal-500" },
+    // ]
 };
 
 // --- 7. MAIN PAGE COMPONENT (Component Chính) ---
-// Tập hợp tất cả các component con. Đây là trang mà Next.js sẽ render.
 const StudentDetail = () => {
-    const student = mockStudentData;
+    // const student = mockStudentData;
+    const [student, setStudentData] = useState<any>(null);
+    const studentId = useAppSelector((state) => state.user.studentId);
+    const userData = useAppSelector((state) => state.user);
 
+    useEffect(() => {
+        if(studentId){
+            StudentService.getStudentById(studentId).then(res => {
+                console.log(res,userData);
+                const studentInfo = {
+                    name: res.name,
+                    imageUrl: res.avatar, 
+                    grade: res.class,
+                    status: "Active",
+                    contact: {
+                        email: "avamitchell@email.com",
+                        phone: "+84 901 888 123",
+                        address: "753 King Street, LA, California",
+                    },
+                    activity: {
+                        totalHours: "42 Hrs",
+                        courses: 16,
+                        badges: 10.5,
+                        avgScore: 98,
+                        data: [
+                            { day: 'Mon', study: 10, quiz: 5 }, // 10+5 = 15
+                            { day: 'Tue', study: 15, quiz: 8 }, // 15+8 = 23
+                            { day: 'Wed', study: 8, quiz: 4 },
+                            { day: 'Thu', study: 18, quiz: 6 },
+                            { day: 'Fri', study: 20, quiz: 10 },
+                            { day: 'Sat', study: 12, quiz: 6 },
+                            { day: 'Sun', study: 5, quiz: 3 },
+                        ]
+                    },
+                }
+                setStudentData(studentInfo);
+            })
+        }
+    }, [studentId]);
+    if(!student) return 
     return (
         <div className="h-screen overflow-hidden bg-gray-50 p-8 flex flex-col">
             {/* Header */}
@@ -86,10 +125,11 @@ const StudentDetail = () => {
                 </div>
 
                 {/* Cột Phải: LearningActivity, Performance + LessonsTracker */}
+                {student.courses ? (
                 <div className="col-span-12 lg:col-span-8 xl:col-span-9 flex flex-col h-full rounded-2xl overflow-hidden">
                     {/* Hàng trên: LearningActivity + Performance */}
                     <div className="grid grid-cols-2 md:grid-cols-2 gap-6">
-                        <LearningActivity activity={student.activity} />
+                        <LearningActivity isCourses={true} activity={student.activity} />
                         <Performance performance={student.performance} />
                     </div>
 
@@ -98,6 +138,12 @@ const StudentDetail = () => {
                         <LessonsTracker courses={student.courses} />
                     </div>
                 </div>
+                ) : (
+                <div className="col-span-12 lg:col-span-8 xl:col-span-9 flex flex-col h-full rounded-2xl overflow-hidden">
+                    <LearningActivity isCourses={false} activity={student.activity} />
+                </div>
+                ) }
+                
             </div>
         </div>
     );

@@ -82,12 +82,20 @@ function UpdateData({ children }: ProvidersProps) {
         UserService.validateUser(getEmail).then(
             res => {
                 dispatch(setUser(res));
+                if(res.role == 'admin') {
+                    StudentService.getData().then(
+                        res => {
+                            dispatch(setList(res.data))
+                        }
+                    )
+                }
             }
         )
-        StudentService.getData().then(
-            res =>
-                dispatch(setList(res.data))
-        )
+        // StudentService.getData().then(
+        //     res => {
+        //         dispatch(setList(res.data))
+        //     }
+        // )
     }, [dispatch, isLoginPage, pathname]);
     return children;
 }
