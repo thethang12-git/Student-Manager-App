@@ -4,13 +4,15 @@ import studentReducer from "./slices/studentList"
 import dateSliceReducer from "./slices/dateCountData"
 import actionType from "@/store/slices/actionMenuType";
 import classCountData from "@/store/slices/classCount";
+import studentDetailReducer  from './slices/studentDetail';
 export const store = configureStore({
     reducer: {
         user: userReducer,
         student: studentReducer,
         date: dateSliceReducer,
         actionType:actionType,
-        classCountData: classCountData
+        classCountData: classCountData,
+        studentDetail: studentDetailReducer,
     },
 });
 

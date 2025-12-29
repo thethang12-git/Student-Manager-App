@@ -7,6 +7,7 @@ import Performance from "@/components/parentPage/components/performance";
 import LessonsTracker from "./components/lessonsTracker";
 import { useAppSelector } from '@/store/hook';
 import StudentService from '@/service/studentList';
+import UserService from '@/service/userData';
 
 
 // --- 6. DATA MOCKUP (Dữ liệu giả lập) ---
@@ -14,7 +15,7 @@ import StudentService from '@/service/studentList';
 
 const mockStudentData = {
     name: "Ava Mitchell",
-    imageUrl: "/images/ava_mitchell.jpg", // Thay thế bằng URL ảnh thực tế
+    imageUrl: "/images/ava_mitchell.jpg", 
     grade: "10th",
     status: "Active",
     contact: {
@@ -66,20 +67,24 @@ const StudentDetail = () => {
     const [student, setStudentData] = useState<any>(null);
     const studentId = useAppSelector((state) => state.user.studentId);
     const userData = useAppSelector((state) => state.user);
-
+    const StudentDetail = useAppSelector((state) => state.studentDetail.id);
+    useEffect(() => {
+        console.log(StudentDetail);
+    }, [StudentDetail]);
     useEffect(() => {
         if(studentId){
-            StudentService.getStudentById(studentId).then(res => {
-                console.log(res,userData);
+            StudentService.getStudentById(studentId).then(studentData => {
+                UserService.getUserById(userData.userId).then(userInfo => {
+                    console.log(studentData,userInfo.data);
                 const studentInfo = {
-                    name: res.name,
-                    imageUrl: res.avatar, 
-                    grade: res.class,
-                    status: "Active",
+                    name: studentData.name,
+                    imageUrl: studentData.avatar, 
+                    grade: studentData.class,
+                    status: studentData.id ? "Active" : "Inactive",
                     contact: {
-                        email: "avamitchell@email.com",
-                        phone: "+84 901 888 123",
-                        address: "753 King Street, LA, California",
+                        email: userInfo.data.email,
+                        phone: userInfo.data.phoneNumber,
+                        address: userInfo.data.address,
                     },
                     activity: {
                         totalHours: "42 Hrs",
@@ -87,8 +92,8 @@ const StudentDetail = () => {
                         badges: 10.5,
                         avgScore: 98,
                         data: [
-                            { day: 'Mon', study: 10, quiz: 5 }, // 10+5 = 15
-                            { day: 'Tue', study: 15, quiz: 8 }, // 15+8 = 23
+                            { day: 'Mon', study: 10, quiz: 5 },
+                            { day: 'Tue', study: 15, quiz: 8 }, 
                             { day: 'Wed', study: 8, quiz: 4 },
                             { day: 'Thu', study: 18, quiz: 6 },
                             { day: 'Fri', study: 20, quiz: 10 },
@@ -98,7 +103,13 @@ const StudentDetail = () => {
                     },
                 }
                 setStudentData(studentInfo);
+                });
             })
+        }
+        else {
+            if(StudentDetail){
+                
+            }
         }
     }, [studentId]);
     if(!student) return 

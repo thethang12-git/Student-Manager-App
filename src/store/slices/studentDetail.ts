@@ -1,18 +1,18 @@
-// import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-// const initialState: { value: string } = {
-//     value: "",
-// };
+const initialState: { id: string } = {
+    id: "",
+};
 
-// export const dateSlice = createSlice({
-//     name: "dateCountData",
-//     initialState,
-//     reducers: {
-//         setValue: (state, action: PayloadAction<string>) => {
-//             state.value = action.payload;
-//         },
-//     },
-// });
+export const studentDetailSlice = createSlice({
+    name: "studentDetail",
+    initialState,
+    reducers: {
+        setStudentDetail: (state, action: PayloadAction<string>) => {
+            state.id = action.payload;
+        },
+    },
+});
 
-// export const { setValue } = dateSlice.actions;
-// export default dateSlice.reducer;
+export const { setStudentDetail } = studentDetailSlice.actions;
+export default studentDetailSlice.reducer;
