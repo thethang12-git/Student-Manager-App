@@ -43,13 +43,13 @@ export default function LoginPage ()  {
                     localStorage.setItem("id", JSON.stringify(user.id));
                     localStorage.setItem("avatar", JSON.stringify(user.avatar));
                     setOpen(true)
-                    setMessage('đúng òy')
+                    setMessage('đăng nhập thành công')
                     setType('success')
                     setTimeout(() =>router.replace('/home'),1300 )
                 }
                 else {
                     setOpen(true)
-                    setMessage('sai òy')
+                    setMessage('sai thông tin đăng nhập')
                     setType('warning')
                     setTimeout(() => {
                         setIsSubmitting(false);

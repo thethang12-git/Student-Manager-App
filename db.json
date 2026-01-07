@@ -2,8 +2,8 @@
   "users": [
     {
       "id": "1",
-      "name": "Mẹ Hương",
-      "email": "Lanhuong@gmail.com",
+      "name": "giáo viên",
+      "email": "giaovien@gmail.com",
       "password": "18122000",
       "role": "admin",
       "avatar": "https://marketplace.canva.com/SrBBE/MAGvNOSrBBE/1/tl/canva-cartoon-illustration-female-teacher-MAGvNOSrBBE.png"
