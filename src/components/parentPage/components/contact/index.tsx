@@ -1,7 +1,8 @@
 "use client"
 import {IoIosCall, IoIosMail} from "react-icons/io";
-import {FaInstagram, FaLinkedin, FaMapMarkerAlt, FaTwitter} from "react-icons/fa";
+import {FaFacebook, FaInstagram, FaMapMarkerAlt, FaTwitter} from "react-icons/fa";
 import {MdEdit} from "react-icons/md";
+import { SiZalo } from 'react-icons/si'
 import React from "react";
 
 export default function ContactAndSocial({student}: {student: any}) {
@@ -28,13 +29,16 @@ export default function ContactAndSocial({student}: {student: any}) {
                 <h4 className="text-lg font-semibold text-gray-800 mb-4">Social Media</h4>
                 <div className="space-y-3">
                     {[
-                        { icon: FaLinkedin, label: 'Linkedin', value: 'linkedin.com/ava', color: 'text-blue-600' },
-                        { icon: FaTwitter, label: 'Twitter', value: '@avamitchell', color: 'text-sky-400' },
-                        { icon: FaInstagram, label: 'Instagram', value: '@ava.mitchell', color: 'text-pink-500' },
+                        { icon: FaFacebook, label: 'Facebook', value: 'facebook icon', color: 'text-blue-600' },
+                        { icon: 'https://img.icons8.com/color/48/zalo.png', label: 'Zalo', value: 'zalo icon', color: 'text-blue-500' },
                     ].map((item, index) => (
                         <div key={index} className="flex items-center justify-between text-sm text-gray-600">
-                            <div className="flex items-center">
-                                <item.icon className={`w-5 h-5 mr-3 ${item.color}`} />
+                            <div className="flex items-center cursor-pointer select-none">
+                                {typeof item.icon === 'string' ? (
+                                    <img src={item.icon} className="w-5 h-5 mr-3" alt={item.label} />
+                                ) : (
+                                    <item.icon className={`w-5 h-5 mr-3 ${item.color}`} />
+                                )}
                                 <span className="font-medium text-gray-700">{item.label}</span>
                             </div>
                             <button className="text-gray-400 hover:text-indigo-600 transition">

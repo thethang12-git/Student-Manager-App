@@ -10,13 +10,23 @@ const ActivityStat = ({ icon: Icon, value, label, color }) => (
 );
 
 export default function LearningActivity({activity,isCourses}: {activity: any,isCourses : boolean}) {
+    const [current,setCurrent] = React.useState(0);
+    const [quizTotal, setQuizTotal] = React.useState(0);
+    const calculatePercent = (value: number) => {
+        if(value > current) {setCurrent(value)}
+        return value/current*50;
+    }
+    const calculateQuiz = (value: number) => {
+        if(value > quizTotal) {setQuizTotal(value)}
+        return value/quizTotal*50;
+    }
     return (
         <>
         {isCourses ? (
             <div className="bg-white p-3 rounded-2xl shadow-lg border border-gray-100 overflow-auto h-full">
                 <h4 className="text-lg font-semibold text-gray-800 mb-1">Learning Activity</h4>
                 <p className="text-3xl font-bold text-gray-900">{activity.totalHours}</p>
-                <p className="text-sm text-gray-500 mb-6">30 days</p>
+                <p className="text-sm text-gray-500 mb-6">Trong tuần</p>
 
                 {/* Mô phỏng Biểu đồ cột */}
                 <div className="flex justify-between items-end h-18 space-x-2">
@@ -45,32 +55,35 @@ export default function LearningActivity({activity,isCourses}: {activity: any,is
             {/* HEADER */}
             <div className="mb-4">
                 <h4 className="text-lg font-semibold text-gray-800">
-                    Learning Activity
+                    Số buổi học
                 </h4>
                 <p className="text-3xl font-bold text-gray-900">
-                    {activity.totalHours} Hrs
+                    {activity.totalLessonCount} buổi
                 </p>
                 <p className="text-sm text-gray-500">
-                    30 days
+                    Trong tháng
                 </p>
             </div>
             <div className="flex-1 flex items-end justify-between gap-3 px-2">
                 {activity.data.map((day, index) => (
                     <div
                         key={index}
-                        className="flex flex-col items-center h-full justify-end w-full"
+                        className="flex flex-col items-center h-full justify-end w-full group"
                     >
                         <div
-                            className="w-full bg-indigo-300 rounded-t-md"
+                            className="w-full bg-indigo-300 rounded-t-md transition-all duration-300 group-hover:bg-indigo-500"
                             style={{
-                                height: `${day.study}%`,
+                                height: `${calculatePercent(day.study)}%`,
                             }}
+                            title={`Số buổi học: ${day.study} buổi`}
+                            // onMouseEnter={() => }
                         />
                         <div
-                            className="w-full bg-yellow-300 rounded-b-md"
+                            className="w-full bg-yellow-300 rounded-b-md transition-all duration-300 group-hover:bg-yellow-500"
                             style={{
-                                height: `${day.quiz}%`,
+                                height: `${calculateQuiz(day.quiz)}%`,
                             }}
+                            title={`Số bài tập hoàn thành: ${day.quiz}%`}
                         />
                         <span className="text-xs text-gray-500 mt-2">
                             {day.day}
@@ -79,9 +92,9 @@ export default function LearningActivity({activity,isCourses}: {activity: any,is
                 ))}
             </div>
             <div className="mt-4 pt-4 border-t flex justify-between text-center">
-                <ActivityStat icon={LuBookOpen} value={`${activity.courses} Courses`} label="Started" color="text-indigo-600" />
-                <ActivityStat icon={LuTrophy} value={`${activity.badges} Badges`} label="Earned" color="text-yellow-600" />
-                <ActivityStat icon={LuGauge} value={`${activity.avgScore}%`} label="Avg. Score" color="text-green-600" />
+                <ActivityStat icon={LuBookOpen} value={`${activity.courses} `} label="Số buổi học trong tuần" color="text-indigo-600" />
+                <ActivityStat icon={LuTrophy} value={`${activity.badges} `} label="Bài tập" color="text-yellow-600" />
+                <ActivityStat icon={LuGauge} value={`${activity.avgScore}%`} label="Đánh giá" color="text-green-600" />
             </div>
         </div>
         )}

@@ -29,7 +29,7 @@ const mockStudentData = {
         badges: 10.5,
         avgScore: 98,
         data: [
-            { day: 'Mon', study: 10, quiz: 5 }, // 10+5 = 15
+            { day: 'Mon', study: 1, quiz: 3 }, // 10+5 = 15
             { day: 'Tue', study: 15, quiz: 8 }, // 15+8 = 23
             { day: 'Wed', study: 8, quiz: 4 },
             { day: 'Thu', study: 18, quiz: 6 },
@@ -87,20 +87,32 @@ const StudentDetail = () => {
                         address: userInfo.data.address,
                     },
                     activity: {
-                        totalHours: "42 Hrs",
+                        totalLessonCount: "42",
                         courses: 16,
                         badges: 10.5,
                         avgScore: 98,
                         data: [
-                            { day: 'Mon', study: 10, quiz: 5 },
-                            { day: 'Tue', study: 15, quiz: 8 }, 
-                            { day: 'Wed', study: 8, quiz: 4 },
-                            { day: 'Thu', study: 18, quiz: 6 },
-                            { day: 'Fri', study: 20, quiz: 10 },
-                            { day: 'Sat', study: 12, quiz: 6 },
-                            { day: 'Sun', study: 5, quiz: 3 },
+                            { day: 'Thứ 2', study: 10, quiz: 5 },
+                            { day: 'Thứ 3', study: 15, quiz: 8 },
+                            { day: 'Thứ 4', study: 8, quiz: 4 },
+                            { day: 'Thứ 5', study: 18, quiz: 6 },
+                            { day: 'Thứ 6', study: 20, quiz: 10 },
+                            { day: 'Thứ 7', study: 12, quiz: 6 },
+                            { day: 'Chủ nhật', study: 5, quiz: 3 },
                         ]
                     },
+                    //
+                    // courses : [
+                    //     { name: "French for Beginners", abbr: "FR", chapters: 18, progress: 65, score: 78, status: "Active", color: "bg-red-500" },
+                    // ],
+                    // performance: {
+                    //     overall: 80,
+                    //     participation: 95,
+                    //     quizzes: 88,
+                    //     exams: 100,
+                    //     quote: "Motivated by your hard efforts, repeated wins are due. Keep pushing forward!",
+                    // },
+                    //
                 }
                 setStudentData(studentInfo);
                 });
@@ -108,7 +120,7 @@ const StudentDetail = () => {
         }
         else {
             if(StudentDetail){
-                
+
             }
         }
     }, [studentId]);
