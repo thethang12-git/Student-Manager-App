@@ -1,7 +1,7 @@
 "use client"
 import React from "react";
 
-const PerfMetric = ({ label, value, color }) => (
+const PerfMetric = ({ label, value, color } : any) => (
     <div className="flex justify-between items-center">
         <div className="flex items-center">
             <span className={`w-2 h-2 rounded-full mr-2 ${color}`}></span>

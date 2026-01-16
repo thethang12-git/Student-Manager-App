@@ -4,6 +4,8 @@ import {FormikProps} from "formik";
 import { User } from 'lucide-react';
 interface FormValues {
     title: string;
+    startTime: string;
+    endTime: string;
 }
 interface CreateFormProps {
     formik: FormikProps<FormValues>;

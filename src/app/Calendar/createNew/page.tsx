@@ -13,6 +13,11 @@ interface CreateNewProps {
     formikData: any,
     setLoadData?: (value: (((prevState: boolean) => boolean) | boolean)) => void
 }
+interface FormValues {
+  title: string;
+  startTime: string;
+  endTime: string;
+}
 function formatResult(date: Date, time: string, isEnd: boolean): string {
     const d = new Date(date);
     const year = d.getFullYear();
@@ -24,11 +29,11 @@ function formatResult(date: Date, time: string, isEnd: boolean): string {
 
 function CreateNew({show, setShow, setFormikData, formikData, setLoadData}: CreateNewProps) {
     const handleClose = () => setShow(false);
-    const newData = useFormik({
+    const newData = useFormik<FormValues>({
         initialValues: {
             title: '',
-            startTime: '10:00',
-            endTime: '11:00'
+            startTime: '',
+            endTime: ''
         },
         onSubmit:async (values) => {
             if (!values.title.trim()) return
