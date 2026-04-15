@@ -11,6 +11,7 @@ import dayjs, {Dayjs} from "dayjs";
 import Snackbar from "@/components/snackbar";
 import StudentService from "@/service/studentList";
 import {addStudent} from "@/store/slices/studentList";
+import DropDownForClassCount from './DropClassCount';
 
 const findLastWord = (str: string) => {
     const words = str.trim().split(" ").filter(Boolean);
@@ -109,7 +110,9 @@ const AddNewPopUp = ({}) => {
         })
     }, [dateCount]);
     const handleFocus = () => {
-        focusHere.current.focus();
+        if(focusHere.current) {
+            focusHere.current.focus();
+        }
     }
     const validate= age && studentClass && studentName
     const handleSubmit = ((e) => {
@@ -133,6 +136,7 @@ const AddNewPopUp = ({}) => {
             setTimeout(() => {ClassCountData.updateData(value)}, 1000);
             closeModal();
             console.log(value)
+            setStudentName('')
         }
         else if(actionType == 'manage'){
             const getLastId = studentListAll.length > 0 ? studentListAll[studentListAll.length -1].id : '0';
@@ -299,7 +303,24 @@ const AddNewPopUp = ({}) => {
                         <form onSubmit={handleSubmit} className="mt-4 space-y-4">
                             {/* Tên Học Sinh */}
                             <div>
-                                <label htmlFor="studentName" style={{display:'flex'}} className="flex items-center text-sm font-medium text-gray-700 mb-1">
+                                {actionType == 'classCount' ? (<DropDownForClassCount studentName = {studentName} setStudentName = {setStudentName} />) : (
+                                    <>
+                                        <label htmlFor="studentName" style={{display:'flex'}} className="flex items-center text-sm font-medium text-gray-700 mb-1">
+                                            <User className="w-4 h-4 mr-2 text-gray-500"/> Tên Học Sinh
+                                        </label>
+                                        <input
+                                            ref={focusHere}
+                                            type="text"
+                                            id="studentName"
+                                            placeholder="Nhập tên học sinh..."
+                                            required
+                                            value={studentName}
+                                            onChange={(e) => setStudentName(e.target.value)}
+                                            className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-${secondary} focus:border-${secondary} transition duration-150 ease-in-out`}
+                                        />
+                                    </>
+                                )  }
+                                {/* <label htmlFor="studentName" style={{display:'flex'}} className="flex items-center text-sm font-medium text-gray-700 mb-1">
                                     <User className="w-4 h-4 mr-2 text-gray-500"/> Tên Học Sinh
                                 </label>
                                 <input
@@ -311,7 +332,7 @@ const AddNewPopUp = ({}) => {
                                     value={studentName}
                                     onChange={(e) => setStudentName(e.target.value)}
                                     className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-${secondary} focus:border-${secondary} transition duration-150 ease-in-out`}
-                                />
+                                /> */}
                             </div>
                             {/*chọn thứ trong tuần*/}
                             {actionType == 'classCount' && (

@@ -69,6 +69,15 @@
       "class": "1",
       "avatar": "https://res.cloudinary.com/dui5lhaq7/image/upload/v1766914464/hlcdmwpm7jibssliobdq.jpg",
       "count": 0
+    },
+    {
+      "id": "3",
+      "name": "Thắng",
+      "age": "12",
+      "date": "14-04-2026",
+      "class": "4",
+      "avatar": "https://res.cloudinary.com/dui5lhaq7/image/upload/v1776138190/burtafq6qrh3iajpbbdj.jpg",
+      "count": 0
     }
   ],
   "classCount": [
@@ -167,18 +176,6 @@
       "name": "Dũng: Nghiên cứu thị trường",
       "day": "2025-12-02",
       "time": "13:45"
-    },
-    {
-      "id": "t17",
-      "name": "ahda",
-      "time": "09:35",
-      "day": "2025-12-25"
-    },
-    {
-      "id": "t18",
-      "name": "ạhsgd",
-      "time": "09:36",
-      "day": "2025-12-22"
     }
   ]
 }
