@@ -52,14 +52,14 @@ export default function DropDownForClassCount({studentName,setStudentName} : any
     StudentService.getData().then(res => {setStudentList(res.data.map((itm: { name: any; })  => itm.name))})
         // setStudentList(prev => [...prev,res.data.name])})
   },[])
-  const handleChange = (event) => {
+  const handleChange = (event : any) => {
     setPersonName(event.target.value);
     setStudentName(event.target.value)
   };
   return (
     <div>
       <FormControl sx={{ m: 0, width: '100%' }}>
-        <InputLabel id="demo-multiple-name-label">Name</InputLabel>
+        <InputLabel id="demo-multiple-name-label">Tên học sinh...</InputLabel>
         <Select
           labelId="demo-multiple-name-label"
           id="demo-multiple-name"

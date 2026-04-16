@@ -119,6 +119,12 @@ const AddNewPopUp = ({}) => {
         e.preventDefault();
         if(!classCount) return
         if(actionType == 'classCount') {
+            if(!studentName){
+                setMessage('Nhập tên học sinh vào đi!')
+                setType('error')
+                setOpen(true)
+                return
+            }
             const str = classCount[classCount.length -1].id;
             const trueId = str.replace(/\D/g, "");
             const now = new Date();
