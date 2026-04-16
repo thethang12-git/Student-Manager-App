@@ -1,5 +1,4 @@
 'use client'
-import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useFormik } from 'formik';
 import Form from "react-bootstrap/Form";
@@ -55,12 +54,18 @@ function NewForm({ newForm, setNewForm, setLoadData,newFormData }: NewFormProps)
                 </Form>
             </Modal.Body>
             <Modal.Footer className="d-flex justify-content-between w-100">
-                <Button variant="danger" onClick={handleClose}>
+                <button 
+                style={{borderRadius:'8px'}}
+                className="px-4 py-2 text-sm font-semibold text-red-600 bg-red-100 hover:bg-red-200 transition"
+                onClick={handleClose}>
                     Cancel
-                </Button>
-                <Button variant="primary" type = "submit" onClick={() =>{formik.handleSubmit()}} >
+                </button>
+                <button  
+                    style={{borderRadius:'8px'}}
+                    className="px-4 py-2 text-sm font-semibold text-white bg-indigo-600 shadow-md hover:bg-indigo-700 transition"
+                    type = "submit" onClick={() =>{formik.handleSubmit()}} >
                     Add new Event!!
-                </Button>
+                </button>
             </Modal.Footer>
         </Modal>
     );
