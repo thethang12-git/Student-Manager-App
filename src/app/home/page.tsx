@@ -15,6 +15,7 @@ import ClassCount from "@/components/classCount";
 import AddNewPopUp from "@/components/addNewPopUp";
 import {useDispatch} from "react-redux";
 import {setValue} from "@/store/slices/actionMenuType";
+import LessonTracker from '@/components/lessonTracker';
 
 // Component chính (Đã đổi tên thành Home)
 const Home = () => {
@@ -97,6 +98,9 @@ const Home = () => {
                     <div style={{flex:1,overflow:"hidden"}} className={`reveal-down ${animationMap[activeMenu] ? "show" : ""}`}>
                         <ClassCount/>
                     </div>)}
+                    {activeMenu === 'progress' && (
+                        <LessonTracker/>
+                    )}
                 </main>
             </div>
         </div>
