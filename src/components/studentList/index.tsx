@@ -151,17 +151,39 @@ const StudentList = ({ initialStudentsData } :any ) => {
     }, [initialStudentsData]);
     const [sortConfig, setSortConfig] = useState({ key: null, direction: 'ascending' });
     if(!initialStudentsData) return null;
+    const normalizeValue = (value : any) => {
+        if (value == null) return ''; // null/undefined
+        if (typeof value === 'boolean') return value ? 1 : 0;
+        if (typeof value === 'string') return value.toLowerCase();
+        return value;
+    }
     const sortedStudents = useMemo(() => {
         const sortableItems = Array.isArray(students) ? [...students] : [];
+        if(sortConfig.key == 'date') {
+            sortableItems.sort((a,b) : any => {
+                const [da, ma, ya] = a.date.split('-');
+                const [db, mb, yb] = b.date.split('-');
+                const valueA = new Date(`${ya}-${ma}-${da}`).getTime();
+                const valueB = new Date(`${yb}-${mb}-${db}`).getTime();
+                if (sortConfig.direction === 'ascending') {
+                    return valueA - valueB;
+                } else {
+                    return valueB - valueA;
+                }
+            })
+            return sortableItems
+        }
         if (sortConfig.key !== null) {
             sortableItems.sort((a, b) => {
-                if (a[sortConfig.key] < b[sortConfig.key]) {
-                    return sortConfig.direction === 'ascending' ? -1 : 1;
+                const aValue = normalizeValue(a[sortConfig.key]);
+                const bValue = normalizeValue(b[sortConfig.key]);
+                if (aValue === bValue) return 0;
+
+                if (sortConfig.direction === 'ascending') {
+                    return -1
+                } else {
+                    return 1
                 }
-                if (a[sortConfig.key] > b[sortConfig.key]) {
-                    return sortConfig.direction === 'ascending' ? 1 : -1;
-                }
-                return 0;
             });
         }
         return sortableItems;

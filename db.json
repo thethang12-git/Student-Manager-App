@@ -42,6 +42,11 @@
       "start": "2025-12-24T00:00:00.000Z",
       "end": null,
       "allDay": true
+    },
+    {
+      "id": "64c1",
+      "title": "moi moi",
+      "start": "2026-04-15"
     }
   ],
   "students": [
@@ -70,6 +75,15 @@
       "date": "14-04-2026",
       "class": "4",
       "avatar": "https://res.cloudinary.com/dui5lhaq7/image/upload/v1776138190/burtafq6qrh3iajpbbdj.jpg",
+      "count": 0
+    },
+    {
+      "id": "4",
+      "name": "Thắng",
+      "age": "23",
+      "date": "28-04-2026",
+      "class": "4",
+      "avatar": "https://placehold.co/40x40/9333ea/ffffff?text=T",
       "count": 0
     }
   ],
