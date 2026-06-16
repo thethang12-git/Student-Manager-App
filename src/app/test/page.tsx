@@ -389,7 +389,7 @@ function ContactTab({ onSubmitMessage }) {
 /* =========================================================================
    MAIN EXPORT COMPONENT: APP (Điều phối chính)
    ========================================================================= */
-export default function App() {
+export default function abcd() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('tab-intro');
   const [isFollowing, setIsFollowing] = useState(false);
@@ -433,19 +433,6 @@ export default function App() {
   };
 
   // Kiểu dáng inline cho các khu vực giao diện chính
-  const containerStyle = {
-    backgroundColor: '#020617',
-    color: '#f1f5f9',
-    minHeight: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    position: 'relative',
-    overflow: 'hidden',
-    fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-    userSelect: 'none',
-    boxSizing: 'border-box'
-  };
 
   const overlayBg1 = {
     position: 'absolute',
@@ -457,42 +444,6 @@ export default function App() {
     left: '-48px',
     filter: 'blur(64px)',
     pointerEvents: 'none'
-  };
-
-  const overlayBg2 = {
-    position: 'absolute',
-    width: '384px',
-    height: '384px',
-    borderRadius: '50%',
-    backgroundColor: 'rgba(236, 72, 153, 0.1)',
-    bottom: '-48px',
-    right: '-48px',
-    filter: 'blur(64px)',
-    pointerEvents: 'none'
-  };
-
-  const headerStyle = {
-    width: '100%',
-    maxWidth: '1200px',
-    margin: '0 auto',
-    padding: '24px',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    zIndex: 10,
-    boxSizing: 'border-box'
-  };
-
-  const mainStyle = {
-    flexGrow: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '24px',
-    position: 'relative',
-    zIndex: 10,
-    boxSizing: 'border-box'
   };
 
   const openButtonStyle = {
@@ -569,38 +520,8 @@ export default function App() {
   };
 
   return (
-    <div style={containerStyle}>
-      {/* Hiệu ứng nền */}
-      <div style={overlayBg1}></div>
-      <div style={overlayBg2}></div>
-
-      {/* Header */}
-      <header style={headerStyle}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '12px', backgroundColor: '#4f46e5', display: 'flex', alignItems: 'center', justifyStyle: 'center', justifyContent: 'center', color: '#ffffff', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}>
-            <User style={{ width: '16px', height: '16px' }} />
-          </div>
-          <div>
-            <h1 style={{ fontSize: '12px', fontWeight: '700', letterSpacing: '0.05em', color: '#ffffff', margin: 0 }}>MINIMALIST MODAL</h1>
-            <p style={{ fontSize: '9px', color: '#64748b', margin: 0 }}>Giao diện trưng bày cá nhân bằng CSS Inline</p>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main style={mainStyle}>
-        <div style={{ maxWidth: '512px', width: '100%', textAlign: 'center' }}>
-          <span style={{ fontSize: '9px', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: '700', color: '#818cf8', backgroundColor: 'rgba(99, 102, 241, 0.1)', padding: '6px 16px', borderRadius: '9999px', border: '1px solid rgba(99, 102, 241, 0.2)', marginBottom: '20px', display: 'inline-block' }}>
-            Pure Inline CSS Code
-          </span>
-          <h2 style={{ fontSize: isMobile ? '28px' : '48px', fontWeight: '800', letterSpacing: '-0.025em', color: '#ffffff', marginBottom: '16px', lineHeight: 1.2, background: 'linear-gradient(to right, #818cf8, #38bdf8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', margin: 0 }}>
-            Split-Screen Tabbed Modal
-          </h2>
-          <p style={{ color: '#94a3b8', fontSize: '12px', maxWidth: '448px', margin: '16px auto 40px auto', lineHeight: '1.6' }}>
-            Một thiết kế tối giản, sạch sẽ giúp hiển thị thông tin giới thiệu, các chỉ số phát triển, timeline hoạt động một cách ngăn nắp và khoa học hoàn toàn bằng CSS Inline.
-          </p>
-
-          <button 
+    <>
+        <button 
             onClick={() => setIsOpen(true)}
             style={openButtonStyle}
             onMouseEnter={(e) => {
@@ -617,10 +538,7 @@ export default function App() {
               <ArrowUpRight style={{ width: '16px', height: '16px' }} />
             </span>
           </button>
-        </div>
-      </main>
-
-      {/* Modal */}
+                  {/* Modal */}
       {isOpen && (
         <div style={modalOverlayStyle}>
           
@@ -729,11 +647,5 @@ export default function App() {
           to { opacity: 1; transform: scale(1); }
         }
       `}</style>
-
-      {/* Footer */}
-      <footer style={{ textAlign: 'center', padding: '24px', color: '#475569', fontSize: '10px', borderTop: '1px solid rgba(15, 23, 42, 0.6)', backgroundColor: 'rgba(2, 6, 23, 0.4)' }}>
-        © 2026 Hồ sơ cá nhân tối giản. Nhấn phím <kbd style={{ padding: '2px 6px', borderRadius: '4px', backgroundColor: '#0f172a', border: '1px solid #1e293b', fontSize: '9px', color: '#64748b', fontFamily: 'monospace' }}>Esc</kbd> để đóng nhanh.
-      </footer>
-    </div>
-  );
-}
+    </>
+      )   }
