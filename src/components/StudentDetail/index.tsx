@@ -1,13 +1,13 @@
 "use client"
 import React, { useState, useEffect,useRef } from 'react';
 import { 
+  School,
   User, 
   BarChart3, 
   Clock, 
-  Mail, 
   X, 
   ArrowUpRight, 
-  Briefcase, 
+  Mail,
   MapPin, 
   Calendar, 
   CheckCircle2, 
@@ -96,8 +96,7 @@ function ProfileSidebar({ activeTab, setActiveTab, isMobile,  } : any) {
   const tabs = [
     { id: 'tab-intro', label: 'Giới thiệu', icon: User, color: '#6366f1' },
     { id: 'tab-stats', label: 'Chỉ số', icon: BarChart3, color: '#10b981' },
-    { id: 'tab-timeline', label: 'Hoạt động', icon: Clock, color: '#f59e0b' },
-    { id: 'tab-contact', label: 'Liên hệ', icon: Mail, color: '#ec4899' }
+    { id: 'tab-timeline', label: 'Hoạt động', icon: Clock, color: '#f59e0b' }
   ];
 
   const sidebarStyle = {
@@ -271,10 +270,10 @@ function IntroTab() {
   ];
 
   const cards = [
-    { icon: Briefcase, title: "Công tác", value: "VinaTech Solution", color: "#6366f1", bg: "#f0f2fe" },
+    { icon: Mail, title: "Email", value: "Trường email ở đây", color: "#6366f1", bg: "#f0f2fe" },
     { icon: MapPin, title: "Địa chỉ", value: "Hà Nội, Việt Nam", color: "#10b981", bg: "#ecfdf5" },
-    { icon: Calendar, title: "Gia nhập", value: "Tháng 12, 2023", color: "#f59e0b", bg: "#fffbeb" },
-    { icon: Globe, title: "Website", value: "ducminh.dev", color: "#06b6d4", bg: "#ecfeff", link: "#" }
+    { icon: Calendar, title: "Ngày bắt đầu học", value: "Nhập ngày bắt đầu học", color: "#f59e0b", bg: "#fffbeb" },
+    { icon: School, title: "Trường", value: "Nhập trường ở đây", color: "#06b6d4", bg: "#ecfeff", link: "http://thpt-tayho-hanoi.edu.vn/homegd1" }
   ];
   const [onEditing,setOnediting] = useState(false)
   const [defaultText,setDefaultText] = useState('xin chào')
@@ -349,7 +348,7 @@ function IntroTab() {
                 <div style={{ overflow: 'hidden' }}>
                   <p style={{ fontSize: '9px', textTransform: 'uppercase', color: '#64748b', fontWeight: '700', margin: 0 }}>{card.title}</p>
                   {card.link ? (
-                    <a href={card.link} style={{ color: card.color, fontWeight: '750', fontSize: '11px', margin: 0, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                    <a target='_blank' href={card.link} style={{ color: card.color, fontWeight: '750', fontSize: '11px', margin: 0, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '2px' }}>
                       {card.value} <ArrowUpRight style={{ width: '10px', height: '10px' }} />
                     </a>
                   ) : (
@@ -362,40 +361,71 @@ function IntroTab() {
         </div>
       </div>
 
-      {/* Phân khu 3: Kỹ năng công nghệ */}
+      {/* Phân khu 3: Thông tin liên lạc */}
       <div>
-        <SectionHeader title="Hệ sinh thái Công nghệ" icon={Terminal} color="#f59e0b" />
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          {categories.map((cat, i) => (
-            <div key={i} style={{ 
-              border: '1px solid #f1f5f9', 
-              borderRadius: '12px', 
-              padding: '12px',
-              backgroundColor: '#ffffff'
-            }}>
-              <p style={{ fontSize: '10px', fontWeight: '800', color: '#64748b', margin: '0 0 8px 0', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
-                {cat.title}
-              </p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                {cat.skills.map((skill, sIdx) => (
-                  <span 
-                    key={sIdx} 
-                    style={{ 
-                      padding: '4px 10px', 
-                      borderRadius: '8px', 
-                      backgroundColor: `${skill.color}08`, 
-                      color: skill.color, 
-                      fontSize: '10px', 
-                      fontWeight: '700',
-                      border: `1px solid ${skill.color}15`
-                    }}
-                  >
-                    {skill.name}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
+        <SectionHeader title="Thông tin liên lạc" icon={Share2} color="#3b82f6" />
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <a href="#" style={{ 
+            // padding: '10px 16px', 
+            // backgroundColor: '#f0f4fe', 
+            color: '#3b82f6', 
+            borderRadius: '10px', 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '6px',
+            textDecoration: 'none', 
+            fontSize: '11px',
+            fontWeight: '700',
+            transition: 'all 0.2s' 
+          }}>
+            <img style={{ width: '80px', height: '80px' }} src="https://img.icons8.com/bubbles/100/zalo.png" alt="zalo"/>
+             {/* Zalo */}
+          </a>
+          <a href="#" style={{ 
+            // padding: '10px 16px', 
+            // backgroundColor: '#f8fafc', 
+            color: '#0f172a', 
+            borderRadius: '10px', 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '6px',
+            textDecoration: 'none', 
+            fontSize: '11px',
+            fontWeight: '700',
+            transition: 'all 0.2s' 
+          }}>
+            <img style={{ width: '80px', height: '80px' }} src="https://img.icons8.com/clouds/100/facebook-new.png" alt="facebook-new"/>
+          </a>
+          <a href="#" style={{ 
+            // padding: '10px 16px', 
+            // backgroundColor: '#f8fafc', 
+            color: '#0f172a', 
+            borderRadius: '10px', 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '6px',
+            textDecoration: 'none', 
+            fontSize: '11px',
+            fontWeight: '700',
+            transition: 'all 0.2s' 
+          }}>
+            <img width="80" height="80" src="https://img.icons8.com/bubbles/100/tiktok.png" alt="tiktok"/>
+          </a>
+          <a href="tel:0911557616" style={{ 
+            // padding: '10px 16px', 
+            // backgroundColor: '#f8fafc', 
+            color: '#0f172a', 
+            borderRadius: '10px', 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '6px',
+            textDecoration: 'none', 
+            fontSize: '11px',
+            fontWeight: '700',
+            transition: 'all 0.2s' 
+          }}>
+            <img width="80" height="80" src="https://img.icons8.com/clouds/100/phone.png" alt="phone"/>
+          </a>
         </div>
       </div>
 
@@ -561,156 +591,6 @@ function TimelineTab() {
               <p style={{ fontWeight: '800', color: '#1e293b', marginTop: '2px', marginBottom: 0, fontSize: '12px' }}>{act.title}</p>
             </div>
           ))}
-        </div>
-      </div>
-
-    </div>
-  );
-}
-
-/* =========================================================================
-   SUB-COMPONENT 6: CONTACT TAB CONTENT (Hòm thư liên kết đẹp mắt)
-   ========================================================================= */
-function ContactTab({ onSubmitMessage }) {
-  const [formData, setFormData] = useState({ name: '', email: '', content: '' });
-
-  const handleSubmit = (e : any) => {
-    e.preventDefault();
-    if (!formData.name || !formData.email || !formData.content) return;
-    
-    onSubmitMessage();
-    setFormData({ name: '', email: '', content: '' });
-  };
-
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', animation: 'fadeIn 0.3s ease' }}>
-      
-      {/* Phân khu 1: Form tin nhắn trực tuyến */}
-      <div style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '16px' }}>
-        <SectionHeader title="Hòm thư trực tuyến" icon={MessageSquare} color="#ec4899" />
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-            <input 
-              type="text" 
-              placeholder="Tên của bạn" 
-              value={formData.name}
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
-              required
-              style={{ 
-                width: '100%', 
-                backgroundColor: '#f8fafc', 
-                border: '1px solid #e2e8f0', 
-                borderRadius: '10px', 
-                padding: '10px 14px', 
-                fontSize: '11px', 
-                color: '#0f172a', 
-                outline: 'none', 
-                transition: 'all 0.2s', 
-                boxSizing: 'border-box' 
-              }}
-            />
-            <input 
-              type="email" 
-              placeholder="Địa chỉ Email" 
-              value={formData.email}
-              onChange={(e) => setFormData({...formData, email: e.target.value})}
-              required
-              style={{ 
-                width: '100%', 
-                backgroundColor: '#f8fafc', 
-                border: '1px solid #e2e8f0', 
-                borderRadius: '10px', 
-                padding: '10px 14px', 
-                fontSize: '11px', 
-                color: '#0f172a', 
-                outline: 'none', 
-                transition: 'all 0.2s', 
-                boxSizing: 'border-box' 
-              }}
-            />
-          </div>
-          <textarea 
-            placeholder="Nhập nội dung tin nhắn gửi tới Đức..." 
-            rows={3}
-            value={formData.content}
-            onChange={(e) => setFormData({...formData, content: e.target.value})}
-            required
-            style={{ 
-              width: '100%', 
-              backgroundColor: '#f8fafc', 
-              border: '1px solid #e2e8f0', 
-              borderRadius: '10px', 
-              padding: '10px 14px', 
-              fontSize: '11px', 
-              color: '#0f172a', 
-              outline: 'none', 
-              transition: 'all 0.2s', 
-              resize: 'none', 
-              boxSizing: 'border-box' 
-            }}
-          />
-          
-          <button 
-            type="submit" 
-            style={{ 
-              width: '100%', 
-              background: 'linear-gradient(135deg, #ec4899 0%, #be185d 100%)', 
-              border: 'none', 
-              color: '#ffffff', 
-              fontWeight: '700', 
-              padding: '10px', 
-              borderRadius: '10px', 
-              fontSize: '11px', 
-              textTransform: 'uppercase', 
-              letterSpacing: '0.05em', 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center', 
-              gap: '6px', 
-              cursor: 'pointer', 
-              transition: 'all 0.2s',
-              boxShadow: '0 4px 12px rgba(236, 72, 153, 0.15)' 
-            }}
-          >
-            <Send style={{ width: '12px', height: '12px' }} /> Gửi tin nhắn liên hệ
-          </button>
-        </form>
-      </div>
-
-      {/* Phân khu 2: Mạng xã hội truyền thông */}
-      <div>
-        <SectionHeader title="Mạng xã hội truyền thông" icon={Share2} color="#3b82f6" />
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <a href="#" style={{ 
-            padding: '10px 16px', 
-            backgroundColor: '#f0f4fe', 
-            color: '#3b82f6', 
-            borderRadius: '10px', 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: '6px',
-            textDecoration: 'none', 
-            fontSize: '11px',
-            fontWeight: '700',
-            transition: 'all 0.2s' 
-          }}>
-            <Linkedin style={{ width: '14px', height: '14px' }} /> LinkedIn
-          </a>
-          <a href="#" style={{ 
-            padding: '10px 16px', 
-            backgroundColor: '#f8fafc', 
-            color: '#0f172a', 
-            borderRadius: '10px', 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: '6px',
-            textDecoration: 'none', 
-            fontSize: '11px',
-            fontWeight: '700',
-            transition: 'all 0.2s' 
-          }}>
-            <Github style={{ width: '14px', height: '14px' }} /> GitHub
-          </a>
         </div>
       </div>
 
@@ -888,7 +768,6 @@ export default function StudentDetail({ studentDetailModal, setStudentDetailModa
                 {activeTab === 'tab-intro' && <IntroTab />}
                 {activeTab === 'tab-stats' && <StatsTab />}
                 {activeTab === 'tab-timeline' && <TimelineTab />}
-                {activeTab === 'tab-contact' && <ContactTab onSubmitMessage={handleSendMessage} />}
               </div>
 
               {/* Thanh chức năng Footer */}
