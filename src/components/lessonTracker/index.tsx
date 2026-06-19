@@ -74,9 +74,6 @@ const ProfileCard = ({
 export default function LessonTracker() {
   const studentList = useAppSelector(state => state.student.list)
   const [studentDetailModal, setStudentDetailModal] = useState(false)
-    useEffect(() => {
-        console.log(studentList)
-    },[])
   return (
     <>
         <StudentDetail studentDetailModal={studentDetailModal} setStudentDetailModal={setStudentDetailModal}/>

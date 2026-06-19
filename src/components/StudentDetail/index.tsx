@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+"use client"
+import React, { useState, useEffect,useRef } from 'react';
 import { 
   User, 
   BarChart3, 
@@ -24,8 +25,9 @@ import {
   MessageSquare,
   Share2
 } from 'lucide-react';
-
-function Toast({ message, isVisible, onClose }) {
+import EditIcon from '@mui/icons-material/Edit';
+import DoneIcon from '@mui/icons-material/Done';
+function Toast({ message, isVisible, onClose } : any) {
   useEffect(() => {
     if (isVisible) {
       const timer = setTimeout(() => {
@@ -68,7 +70,7 @@ function Toast({ message, isVisible, onClose }) {
   );
 }
 
-function SectionHeader({ title, icon: Icon, color }) {
+function SectionHeader({ title, icon: Icon, color } : any) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px', marginTop: '6px' }}>
       <div style={{ 
@@ -274,13 +276,15 @@ function IntroTab() {
     { icon: Calendar, title: "Gia nhập", value: "Tháng 12, 2023", color: "#f59e0b", bg: "#fffbeb" },
     { icon: Globe, title: "Website", value: "ducminh.dev", color: "#06b6d4", bg: "#ecfeff", link: "#" }
   ];
-
+  const [onEditing,setOnediting] = useState(false)
+  const [defaultText,setDefaultText] = useState('xin chào')
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', animation: 'fadeIn 0.3s ease' }}>
       
       {/* Phân khu 1: Tiểu sử */}
       <div style={{ borderBottom: '1px solid #f1f5f9', paddingBottom: '16px' }}>
-        <SectionHeader title="Tiểu sử tóm tắt" icon={BookOpen} color="#6366f1" />
+        <SectionHeader title="Thông tin học sinh" icon={BookOpen} color="#6366f1" />
         <div style={{ 
           backgroundColor: '#f8fafc', 
           border: '1px solid #e2e8f0', 
@@ -290,7 +294,26 @@ function IntroTab() {
           color: '#475569', 
           fontSize: '12px' 
         }}>
-          Xin chào! Mình là <strong>Đức</strong>, một lập trình viên Fullstack đam mê tạo ra các ứng dụng web tối giản, tối ưu hóa hiệu năng tốt và có trải nghiệm người dùng cao. Thế mạnh của mình là phát triển hệ sinh thái Front-end và xây dựng hệ thống APIs ổn định.
+          {onEditing ? 
+          <div style={{display:'flex',flexDirection:'row'}}> 
+            <textarea ref={textareaRef} onChange={(e) => {setDefaultText(e.target.value)}} style={{ resize: 'none',width:'100%',outline: 'none',border: 'none' }} value={defaultText} ></textarea>
+            <button onClick={() =>{setOnediting(!onEditing)}} >
+              <DoneIcon fontSize='small' /> 
+            </button>
+          </div>  
+          :
+          <div style={{display:'flex',justifyContent:'space-between',alignItems: 'center',flexDirection:'row'}}>
+            <span> {defaultText}</span>
+            <button onClick={() =>{setOnediting(true) ;setTimeout(() => {
+                    textareaRef.current?.focus();
+                    textareaRef.current?.setSelectionRange(
+                    textareaRef.current.value.length,
+                    textareaRef.current.value.length
+                  )}, 100);}}> 
+              <EditIcon fontSize='small' /> 
+            </button>
+          </div>}
+          
         </div>
       </div>
 
@@ -551,7 +574,7 @@ function TimelineTab() {
 function ContactTab({ onSubmitMessage }) {
   const [formData, setFormData] = useState({ name: '', email: '', content: '' });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e : any) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.content) return;
     
@@ -698,7 +721,7 @@ function ContactTab({ onSubmitMessage }) {
 /* =========================================================================
    MAIN EXPORT COMPONENT: STUDENT DETAIL (Mặt định xuất theo đúng cấu trúc gốc)
    ========================================================================= */
-export default function StudentDetail({ studentDetailModal, setStudentDetailModal }) {
+export default function StudentDetail({ studentDetailModal, setStudentDetailModal } : any) {
   const [activeTab, setActiveTab] = useState('tab-intro');
   const [isFollowing, setIsFollowing] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -730,14 +753,14 @@ export default function StudentDetail({ studentDetailModal, setStudentDetailModa
   }, []);
 
   useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') setStudentDetailModal(false);
+    const handleKeyDown = (e : any) => {
+      if (e.key === 'Escape') {setStudentDetailModal(false);setActiveTab('tab-intro')}
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [setStudentDetailModal]);
 
-  const triggerToast = (message) => {
+  const triggerToast = (message : any) => {
     setToastMessage(message);
     setShowToast(true);
   };
@@ -815,7 +838,7 @@ export default function StudentDetail({ studentDetailModal, setStudentDetailModa
   return (
     <>
       {visible && (
-        <div style={modalOverlayStyle} onClick={() => setStudentDetailModal(false)}>
+        <div style={modalOverlayStyle} onClick={() => {setStudentDetailModal(false),setActiveTab('tab-intro')}}>
           <div style={modalBoxStyle} onClick={(e) => e.stopPropagation()}>
             
             {/* Cột trái - Sidebar thông tin */}
@@ -830,7 +853,7 @@ export default function StudentDetail({ studentDetailModal, setStudentDetailModa
               
               {/* Nút đóng góc phải */}
               <button 
-                onClick={() => setStudentDetailModal(false)}
+                onClick={() => {setStudentDetailModal(false),setActiveTab('tab-intro')}}
                 style={{ 
                   position: 'absolute', 
                   top: '16px', 
@@ -887,7 +910,7 @@ export default function StudentDetail({ studentDetailModal, setStudentDetailModa
                   {isFollowing ? 'Đang theo dõi' : 'Theo dõi'}
                 </button>
                 <button 
-                  onClick={() => setStudentDetailModal(false)}
+                  onClick={() => {setStudentDetailModal(false),setActiveTab('tab-intro')}}
                   style={{
                     padding: '10px 20px',
                     borderRadius: '10px',

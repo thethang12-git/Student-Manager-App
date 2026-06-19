@@ -76,7 +76,8 @@ function UpdateData({ children }: ProvidersProps) {
     const isLoginPage = pathname === '/login' || (pathname === '/register');
     useEffect(() => {
         if(isLoginPage) return
-        const getEmail = JSON.parse(localStorage.getItem("email"));
+        const emailRaw = localStorage.getItem("email");
+        const getEmail = emailRaw ? JSON.parse(emailRaw) : null;
         if(!getEmail) return;
         dispatch(setValue(new Date().toISOString()));
         UserService.validateUser(getEmail).then(

@@ -12,6 +12,7 @@ import Snackbar from "@/components/snackbar";
 import StudentService from "@/service/studentList";
 import {addStudent} from "@/store/slices/studentList";
 import DropDownForClassCount from './DropClassCount';
+import UserService from '@/service/userData';
 
 const findLastWord = (str: string) => {
     const words = str.trim().split(" ").filter(Boolean);
@@ -37,6 +38,8 @@ const SkeletonLine = ({ width = 'w-full', height = 'h-4', className = 'mb-2' }) 
 // Main App component
 const AddNewPopUp = ({}) => {
     const focusHere = useRef<HTMLInputElement>(null);
+    const emailFocus = useRef<HTMLInputElement>(null);
+    const nameFocus = useRef<HTMLInputElement>(null);
     const actionType = useAppSelector(state => state.actionType.value)
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [studentName, setStudentName] = useState('');
@@ -51,6 +54,7 @@ const AddNewPopUp = ({}) => {
     const [startDate, setStartDate] = React.useState<Dayjs | null>(dayjs());
     const fileInputRef = useRef<HTMLInputElement>(null);
     const studentListAll = useAppSelector(state => state.student.list)
+    const [studentEmail, setEmail] = useState('')
     // snackbar
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = React.useState(false);
@@ -84,7 +88,8 @@ const AddNewPopUp = ({}) => {
         setImageFile(null);
         setStudentClass('')
         setPreviewImage(null);
-        setAge('')
+        setAge(''),
+        setEmail(''),
         setStartDate(null)
         if (fileInputRef.current) {
             fileInputRef.current.value = '';
@@ -145,6 +150,7 @@ const AddNewPopUp = ({}) => {
             setStudentName('')
         }
         else if(actionType == 'manage'){
+            // const students = await StudentService.getData().then((res) => console.log(res.data));
             const getLastId = studentListAll.length > 0 ? studentListAll[studentListAll.length -1].id : '0';
             if(validate){
                 if(imageFile) {
@@ -158,7 +164,14 @@ const AddNewPopUp = ({}) => {
                             class:studentClass,
                             avatar: r,
                             count: 0,
+                            email: studentEmail
                         }
+                        UserService.addUser( {
+                            name : newData.name,
+                            role : 'parent',
+                            avatar : newData.avatar,
+                            email : newData.email
+                        })
                         StudentService.addStudent(newData).then(res => {
                             dispatch(addStudent(newData));
                             setMessage('thêm mới thành công')
@@ -185,7 +198,14 @@ const AddNewPopUp = ({}) => {
                             class: studentClass,
                             avatar: avatarUrl,
                             count: 0,
+                            email : studentEmail
                         };
+                        UserService.addUser( {
+                            name : newData.name,
+                            role : 'parent',
+                            avatar : newData.avatar,
+                            email : newData.email
+                        })
                         StudentService.addStudent(newData).then(res => {
                             dispatch(addStudent(newData));
                             setMessage('thêm mới thành công');
@@ -310,21 +330,41 @@ const AddNewPopUp = ({}) => {
                             {/* Tên Học Sinh */}
                             <div>
                                 {actionType == 'classCount' ? (<DropDownForClassCount studentName = {studentName} setStudentName = {setStudentName} />) : (
-                                    <>
-                                        <label htmlFor="studentName" style={{display:'flex'}} className="flex items-center text-sm font-medium text-gray-700 mb-1">
-                                            <User className="w-4 h-4 mr-2 text-gray-500"/> Tên Học Sinh
-                                        </label>
-                                        <input
-                                            ref={focusHere}
-                                            type="text"
-                                            id="studentName"
-                                            placeholder="Nhập tên học sinh..."
-                                            required
-                                            value={studentName}
-                                            onChange={(e) => setStudentName(e.target.value)}
-                                            className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-${secondary} focus:border-${secondary} transition duration-150 ease-in-out`}
-                                        />
-                                    </>
+                                    <div style={{display:'flex', flexDirection:'row', gap: '5%'}}>
+                                        <div ref={nameFocus} style={{ transition:' width 1s ease'}}>
+                                            <label htmlFor="studentName" style={{display:'flex'}} className="flex items-center text-sm font-medium text-gray-700 mb-1">
+                                                <User className="w-4 h-4 mr-2 text-gray-500"/> Tên Học Sinh
+                                            </label>
+                                            <input
+                                                onFocus={() => {nameFocus.current!.style.width = '100%';}}
+                                                onBlur={() => nameFocus.current!.style.width = '50%'}
+                                                ref={focusHere}
+                                                type="text"
+                                                id="studentName"
+                                                placeholder="Nhập tên học sinh..."
+                                                required
+                                                value={studentName}
+                                                onChange={(e) => setStudentName(e.target.value)}
+                                                className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-${secondary} focus:border-${secondary} transition duration-150 ease-in-out`}
+                                            />
+                                        </div>
+                                         <div ref={emailFocus} style={{ transition:' width 1s ease'}}>
+                                            <label htmlFor="email" style={{display:'flex'}} className="flex items-center text-sm font-medium text-gray-700 mb-1">
+                                                <User className="w-4 h-4 mr-2 text-gray-500"/> Email 
+                                            </label>
+                                            <input
+                                                onFocus={() => {emailFocus.current!.style.width = '90%';}}
+                                                onBlur={() => emailFocus.current!.style.width = '50%'}
+                                                type="text"
+                                                id="email"
+                                                placeholder="Nhập email vào"
+                                                required
+                                                value={studentEmail}
+                                                onChange={(e) => setEmail(e.target.value)}
+                                                className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-${secondary} focus:border-${secondary} transition duration-150 ease-in-out`}
+                                            />
+                                        </div>
+                                    </div>
                                 )  }
                                 {/* <label htmlFor="studentName" style={{display:'flex'}} className="flex items-center text-sm font-medium text-gray-700 mb-1">
                                     <User className="w-4 h-4 mr-2 text-gray-500"/> Tên Học Sinh
