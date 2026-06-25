@@ -15,10 +15,46 @@
       "password": "0911557616",
       "role": "parent",
       "avatar": "https://avatardep.info/wp-content/uploads/2024/07/hinh-anh-gia-dinh-4-nguoi-chibi-25.jpg",
-      "studentId": "1",
-      "phoneNumber": "0123456789",
+      "studentId": "3",
+      "phone": "0123456789",
       "address": "Tây Hồ, Hà Nội",
-      "facebook": "https://facebook.com/phuhuynhA"
+      "facebook": "https://facebook.com/phuhuynhA",
+      "zalo": "abncd",
+      "tiktok": "abcd"
+    },
+    {
+      "name": "phụ huynh 3",
+      "role": "parent",
+      "avatar": "https://placehold.co/40x40/9333ea/ffffff?text=1",
+      "email": "12313",
+      "studentId": "4",
+      "id": "mrfS_Ht",
+      "address": "Tây Hồ, Hà Nội",
+      "facebook": "https://facebook.com/phuhuynhA",
+      "zalo": "abncd",
+      "tiktok": "abcd",
+      "phone": "0123456789"
+    },
+    {
+      "name": "phụ huynh 4",
+      "role": "parent",
+      "avatar": "https://placehold.co/40x40/9333ea/ffffff?text=1",
+      "email": "12312",
+      "studentId": "5",
+      "id": "Nf8rLM0",
+      "address": "Tây Hồ, Hà Nội",
+      "facebook": "https://facebook.com/phuhuynhA",
+      "zalo": "abncd",
+      "tiktok": "abcd",
+      "phone": "0123456789"
+    },
+    {
+      "name": "Học sinh mới",
+      "role": "parent",
+      "avatar": "https://placehold.co/40x40/9333ea/ffffff?text=M",
+      "email": "jádksd",
+      "studentId": "6",
+      "id": "QWx-_-0"
     }
   ],
   "events": [
@@ -46,31 +82,45 @@
   ],
   "students": [
     {
-      "id": "1",
-      "name": "ạhdasd",
+      "id": "3",
+      "name": "học sinh 1",
       "age": "21",
       "date": "22-12-2025",
       "class": "1",
       "avatar": "https://res.cloudinary.com/dui5lhaq7/image/upload/v1766386311/lqmfwhewgcbtngenb22a.jpg",
-      "count": 0
+      "count": 0,
+      "school": "abc"
     },
     {
-      "id": "2",
-      "name": "hes hes",
-      "age": "21",
-      "date": "22-12-2025",
-      "class": "1",
-      "avatar": "https://res.cloudinary.com/dui5lhaq7/image/upload/v1766914464/hlcdmwpm7jibssliobdq.jpg",
-      "count": 0
-    },
-    {
-      "id": "3",
+      "id": "4",
       "name": "Thắng",
       "age": "12",
       "date": "14-04-2026",
       "class": "4",
       "avatar": "https://res.cloudinary.com/dui5lhaq7/image/upload/v1776138190/burtafq6qrh3iajpbbdj.jpg",
-      "count": 0
+      "count": 0,
+      "school": "abc"
+    },
+    {
+      "id": "5",
+      "name": "học sinh 4",
+      "age": "12",
+      "date": "22-06-2026",
+      "class": "1",
+      "avatar": "https://placehold.co/40x40/9333ea/ffffff?text=1",
+      "count": 0,
+      "email": "12313",
+      "school": "abc"
+    },
+    {
+      "id": "6",
+      "name": "Học sinh mới",
+      "age": "12",
+      "date": "25-06-2026",
+      "class": "1",
+      "avatar": "https://placehold.co/40x40/9333ea/ffffff?text=M",
+      "count": 0,
+      "email": "jádksd"
     }
   ],
   "classCount": [

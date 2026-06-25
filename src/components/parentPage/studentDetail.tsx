@@ -83,7 +83,7 @@ const StudentDetail = () => {
                     status: studentData.id ? "Active" : "Inactive",
                     contact: {
                         email: userInfo.data.email,
-                        phone: userInfo.data.phoneNumber,
+                        phone: userInfo.data.phone,
                         address: userInfo.data.address,
                     },
                     activity: {

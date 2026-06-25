@@ -151,7 +151,7 @@ const AddNewPopUp = ({}) => {
         }
         else if(actionType == 'manage'){
             // const students = await StudentService.getData().then((res) => console.log(res.data));
-            const getLastId = studentListAll.length > 0 ? studentListAll[studentListAll.length -1].id : '0';
+            const getLastId = studentListAll.length > 0 ? studentListAll[studentListAll.length -1].id : '2';
             if(validate){
                 if(imageFile) {
                     setLoading(true);
@@ -170,7 +170,8 @@ const AddNewPopUp = ({}) => {
                             name : newData.name,
                             role : 'parent',
                             avatar : newData.avatar,
-                            email : newData.email
+                            email : newData.email,
+                            studentId: newData.id
                         })
                         StudentService.addStudent(newData).then(res => {
                             dispatch(addStudent(newData));
@@ -204,7 +205,8 @@ const AddNewPopUp = ({}) => {
                             name : newData.name,
                             role : 'parent',
                             avatar : newData.avatar,
-                            email : newData.email
+                            email : newData.email,
+                            studentId: newData.id
                         })
                         StudentService.addStudent(newData).then(res => {
                             dispatch(addStudent(newData));

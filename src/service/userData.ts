@@ -4,6 +4,28 @@ class UserService {
     static async getUserById(id: any) {
         return await axios.get(`http://localhost:3001/users/${id}`)
     }
+    static async getUserByStudentId(studentId: string) {
+        try {
+            const res = await axios.get(
+                "http://localhost:3001/users",
+                {
+                    params: {
+                        role: "parent"
+                    }
+                }
+            );
+
+            const parent = res.data.find((user: any) =>
+                user.studentId?.includes(studentId)
+            );
+
+            return parent || undefined;
+
+        } catch (err) {
+            console.log(err);
+            return undefined;
+        }
+    }    
     static async validateUser(email: string, password?: string) {
         try {
             const res = await axios.get("http://localhost:3001/users", {params: {email: email, password: password}});
@@ -20,7 +42,7 @@ class UserService {
         role: string;
         avatar?: string;
         studentId?: string;
-        phoneNumber?: string;
+        phone?: string;
         address?: string;
         facebook?: string;
     }) {
@@ -44,7 +66,7 @@ class UserService {
         role?: string;
         avatar?: string;
         studentId?: string;
-        phoneNumber?: string;
+        phone?: string;
         address?: string;
         facebook?: string;
     }) {

@@ -2,6 +2,8 @@
 import React, { useState, useEffect,useRef } from 'react';
 import { 
   School,
+  SquarePen,
+  ArrowDownToLine,
   User, 
   BarChart3, 
   Clock, 
@@ -13,8 +15,6 @@ import {
   CheckCircle2, 
   ThumbsUp, 
   Send,
-  Linkedin,
-  Github,
   Globe,
   Award,
   Sparkles,
@@ -27,7 +27,7 @@ import {
 } from 'lucide-react';
 import EditIcon from '@mui/icons-material/Edit';
 import DoneIcon from '@mui/icons-material/Done';
-function Toast({ message, isVisible, onClose } : any) {
+function Toast({ message, isVisible, onClose,isEditing } : any) {
   useEffect(() => {
     if (isVisible) {
       const timer = setTimeout(() => {
@@ -63,7 +63,13 @@ function Toast({ message, isVisible, onClose } : any) {
   return (
     <div style={toastStyle}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '24px', height: '24px', borderRadius: '50%', backgroundColor: 'rgba(16, 185, 129, 0.1)', color: '#10b981' }}>
-        <ThumbsUp style={{ width: '14px', height: '14px' }} />
+        {!isEditing 
+        ? 
+          <ArrowDownToLine style={{ width: '20px', height: '20px' }}></ArrowDownToLine>
+        :
+          <SquarePen style={{ width: '20px', height: '20px' }}></SquarePen>
+        }
+        
       </div>
       <span>{message}</span>
     </div>
@@ -249,7 +255,12 @@ function ProfileSidebar({ activeTab, setActiveTab, isMobile,  } : any) {
 /* =========================================================================
    SUB-COMPONENT 3: INTRO TAB CONTENT (Giới thiệu phân chia section rõ rệt)
    ========================================================================= */
-function IntroTab() {
+function IntroTab({ToggleEditAll} : any) {
+  useEffect(() => {
+      console.log('ở đây sẽ load dữ liệu')
+      
+    }
+  ,[])
   const categories = [
     {
       title: "Front-end Development",
@@ -268,12 +279,15 @@ function IntroTab() {
       ]
     }
   ];
-
+  const [email,setEmail] = useState('nhập email ở đây')
+  const [location,setLocation] = useState('nhập địa chỉ ở đây')
+  const [startDate,setStartDate] = useState('nhập ngày bắt đầu học')
+  const [school,setSchool] = useState('nhập trường học')
   const cards = [
-    { icon: Mail, title: "Email", value: "Trường email ở đây", color: "#6366f1", bg: "#f0f2fe" },
-    { icon: MapPin, title: "Địa chỉ", value: "Hà Nội, Việt Nam", color: "#10b981", bg: "#ecfdf5" },
-    { icon: Calendar, title: "Ngày bắt đầu học", value: "Nhập ngày bắt đầu học", color: "#f59e0b", bg: "#fffbeb" },
-    { icon: School, title: "Trường", value: "Nhập trường ở đây", color: "#06b6d4", bg: "#ecfeff", link: "http://thpt-tayho-hanoi.edu.vn/homegd1" }
+    { icon: Mail, title: "Email", value: email, color: "#6366f1", bg: "#f0f2fe" ,update: setEmail},
+    { icon: MapPin, title: "Địa chỉ", value: location, color: "#10b981", bg: "#ecfdf5",update: setLocation },
+    { icon: Calendar, title: "Ngày bắt đầu học", value: startDate, color: "#f59e0b", bg: "#fffbeb", update: setStartDate },
+    { icon: School, title: "Trường", value: school, color: "#06b6d4", bg: "#ecfeff", link: "http://thpt-tayho-hanoi.edu.vn/homegd1", update: setSchool }
   ];
   const [onEditing,setOnediting] = useState(false)
   const [defaultText,setDefaultText] = useState('xin chào')
@@ -345,15 +359,25 @@ function IntroTab() {
                 }}>
                   <Icon style={{ width: '14px', height: '14px' }} />
                 </div>
-                <div style={{ overflow: 'hidden' }}>
+                <div style={{ overflow: 'hidden',width:'100%' }}>
                   <p style={{ fontSize: '9px', textTransform: 'uppercase', color: '#64748b', fontWeight: '700', margin: 0 }}>{card.title}</p>
-                  {card.link ? (
-                    <a target='_blank' href={card.link} style={{ color: card.color, fontWeight: '750', fontSize: '11px', margin: 0, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '2px' }}>
-                      {card.value} <ArrowUpRight style={{ width: '10px', height: '10px' }} />
-                    </a>
-                  ) : (
-                    <p style={{ color: '#1e293b', fontWeight: '750', fontSize: '11px', margin: 0, whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{card.value}</p>
-                  )}
+                  {ToggleEditAll ? 
+                    <>
+                      <textarea onChange={(e) => {card.update(e.target.value)}}  
+                      style={{ fontWeight: '750',resize: 'none',fontSize:'12px',height:'16px',width:'100%',outline: 'none',border: 'none',overflow:'hidden',transition:'height 1s ease' }} value={card.value} 
+                      ></textarea>
+                    </>
+                  :
+                    <>
+                      {card.link ? (
+                        <a target='_blank' href={card.link} style={{ color: card.color, fontWeight: '750', fontSize: '12px', margin: 0, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                          {card.value} <ArrowUpRight style={{ width: '10px', height: '10px' }} />
+                        </a>
+                      ) : (
+                        <p style={{ color: '#1e293b', fontWeight: '750', fontSize: '12px', margin: 0, whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{card.value}</p>
+                      )}
+                    </>
+                  }
                 </div>
               </div>
             );
@@ -603,7 +627,7 @@ function TimelineTab() {
    ========================================================================= */
 export default function StudentDetail({ studentDetailModal, setStudentDetailModal } : any) {
   const [activeTab, setActiveTab] = useState('tab-intro');
-  const [isFollowing, setIsFollowing] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [visible, setVisible] = useState(false);
   const [animate, setAnimate] = useState(false);
@@ -645,14 +669,19 @@ export default function StudentDetail({ studentDetailModal, setStudentDetailModa
     setShowToast(true);
   };
 
-  const toggleFollow = () => {
-    setIsFollowing(!isFollowing);
-    triggerToast(!isFollowing ? 'Đã lưu Minh Đức vào danh sách theo dõi!' : 'Đã hủy theo dõi thành công.');
+  const toggleEdit = () => {
+    if(isEditing){
+      setToggleEditAll(!ToggleEditAll)
+      console.log('Bấm nút này thì sẽ cập nhật')
+    }
+    else {
+      setToggleEditAll(!ToggleEditAll)
+    }
+    setIsEditing(!isEditing);
+    triggerToast(!isEditing ? 'Đang chỉnh sửa' : 'Lưu thành công');
   };
 
-  const handleSendMessage = () => {
-    triggerToast('Đã gửi tin nhắn liên hệ của bạn tới Đức thành công!');
-  };
+
 
   const modalOverlayStyle = {
     position: 'fixed',
@@ -714,7 +743,7 @@ export default function StudentDetail({ studentDetailModal, setStudentDetailModa
     gap: '10px',
     flexShrink: 0,
   };
-
+const [ToggleEditAll,setToggleEditAll] =useState(false)
   return (
     <>
       {visible && (
@@ -765,7 +794,7 @@ export default function StudentDetail({ studentDetailModal, setStudentDetailModa
 
               {/* Vùng hiển thị cuộn tin mượt mà */}
               <div style={scrollContainerStyle} className="hide-scrollbar">
-                {activeTab === 'tab-intro' && <IntroTab />}
+                {activeTab === 'tab-intro' && <IntroTab ToggleEditAll={ToggleEditAll}/>}
                 {activeTab === 'tab-stats' && <StatsTab />}
                 {activeTab === 'tab-timeline' && <TimelineTab />}
               </div>
@@ -773,7 +802,7 @@ export default function StudentDetail({ studentDetailModal, setStudentDetailModa
               {/* Thanh chức năng Footer */}
               <div style={modalFooterStyle}>
                 <button 
-                  onClick={toggleFollow}
+                  onClick={toggleEdit}
                   style={{
                     padding: '10px 20px',
                     borderRadius: '10px',
@@ -781,12 +810,12 @@ export default function StudentDetail({ studentDetailModal, setStudentDetailModa
                     fontWeight: '700',
                     cursor: 'pointer',
                     transition: 'all 0.2s ease',
-                    border: isFollowing ? '1px solid #e2e8f0' : '1px solid #6366f1',
-                    backgroundColor: isFollowing ? '#f8fafc' : 'transparent',
-                    color: isFollowing ? '#64748b' : '#6366f1'
+                    border: !isEditing ? '1px solid #e2e8f0' : '1px solid #6366f1',
+                    backgroundColor: isEditing ? '#6366f1' : 'transparent',
+                    color: !isEditing ? '#64748b' : '#ffffff'
                   }}
                 >
-                  {isFollowing ? 'Đang theo dõi' : 'Theo dõi'}
+                  {isEditing ? 'Lưu' : 'Chỉnh sửa'}
                 </button>
                 <button 
                   onClick={() => {setStudentDetailModal(false),setActiveTab('tab-intro')}}
@@ -820,6 +849,7 @@ export default function StudentDetail({ studentDetailModal, setStudentDetailModa
         message={toastMessage} 
         isVisible={showToast} 
         onClose={() => setShowToast(false)} 
+        isEditing={isEditing}
       />
 
       {/* Tải mã hiệu ứng hoạt họa và thanh cuộn tùy chỉnh */}

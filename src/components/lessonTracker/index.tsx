@@ -3,19 +3,22 @@ import React, { useEffect, useState } from 'react';
 import { UserPlus, Star} from 'lucide-react';
 import { useAppSelector } from '@/store/hook';
 import StudentDetail from '../StudentDetail';
-
+import UserService from '@/service/userData';
+import StudentService from '@/service/studentList';
 const ProfileCard = ({ 
+  setId,
+  id,
   setStudentDetailModal,
-  name = "Nguyễn Văn An", 
-  studentClass = "UI/UX Designer", 
-  avatarUrl = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
+  name , 
+  studentClass , 
+  avatarUrl,
   stats = { projects: 128, followers: "1.2k", rating: 4.9 }
 } : any) => {
   return (
       
       <div className="group relative w-full max-w-sm">
         {/* Glassmorphism Card Wrapper */}
-        <div onClick={() => setStudentDetailModal(true)} className="cursor-pointer backdrop-blur-md border border-white/20 rounded-3xl p-8 shadow-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl flex flex-col items-center text-center">
+        <div onClick={() => {setStudentDetailModal(true);setId(id)}} className="cursor-pointer backdrop-blur-md border border-white/20 rounded-3xl p-8 shadow-xl transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl flex flex-col items-center text-center">
           
           {/* Animated Profile Image Container */}
               <img 
@@ -74,23 +77,62 @@ const ProfileCard = ({
 export default function LessonTracker() {
   const studentList = useAppSelector(state => state.student.list)
   const [studentDetailModal, setStudentDetailModal] = useState(false)
+  const [currentId,setCurrentId] = useState()
+  const [fullInf,setFullInf] = useState({
+    parentName: '',
+    studentName:'',
+    email:'',
+    startDate:'',
+    addres:'',
+    school:'',
+    zalo:'',
+    facebook:'',
+    tiktok:'',
+    phone:''
+  })
+  useEffect(() => {
+    const test = async (currentId : any) => {
+      if(!currentId) return
+      await UserService.getUserByStudentId(currentId).then(
+        (parentInf) => {
+          StudentService.getStudentById(currentId).then((studentInf) => {
+            setFullInf((val) =>({
+            ...val,
+            parentName: parentInf.name || '',
+            studentName: studentInf.name || '',
+            email:parentInf.email || '',
+            startDate:studentInf.date || '',
+            addres:parentInf.address || '',
+            school:studentInf.school || '',
+            zalo:parentInf.zalo || '',
+            facebook:parentInf.facebook || '',
+            tiktok:parentInf.tiktok || '',
+            phone:parentInf.phone || ''
+            }) )
+          })
+        }
+      );
+    };
+    test(currentId);
+  }, [currentId]);
+  useEffect(() => {console.log("đây",fullInf)},[fullInf])
   return (
     <>
         <StudentDetail studentDetailModal={studentDetailModal} setStudentDetailModal={setStudentDetailModal}/>
         <div className='flex flex-row w-full h-full gap-[50px] flex-wrap overflow-scroll'>
             {studentList.map((studentInf) => (
                 <ProfileCard  
+                    setId={setCurrentId}
                     setStudentDetailModal = {setStudentDetailModal}
                     key={studentInf.id}
+                    id={studentInf.id}
                     name={studentInf.name}
                     studentClass={`Lớp ${studentInf.class}`}
                     avatarUrl={studentInf.avatar}
-                    stats={{projects: 128, followers: "1.2k", rating: 4.9}}
+                    stats={{projects: 129, followers: "1.2k", rating: 4.9}}
                 />
             ))}
-            
         </div>
-        
     </>
   );
 }

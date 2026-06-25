@@ -6,6 +6,7 @@ interface Student {
     class: string;
     date: string;
     avatar: string;
+    school:string;
 }
 interface StudentListState {
     list: Student[];
